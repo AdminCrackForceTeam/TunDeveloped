@@ -4,213 +4,204 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hệ Thống Trắc Nghiệm</title>
-
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    background:linear-gradient(135deg,#2196f3,#00bcd4);
-}
-.box{
-    max-width:850px;
-    margin:20px auto;
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,.3);
-}
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#2196f3,#00bcd4);}
+.box{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.3);}
 h2{text-align:center;color:#1565c0}
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    background:#1e88e5;
-    color:white;
-    font-size:16px;
-    margin-top:8px;
-}
-input,select{
-    width:100%;
-    padding:8px;
-    margin:5px 0;
-}
-.answer{
-    border:1px solid #ccc;
-    padding:10px;
-    margin:6px 0;
-    border-radius:6px;
-    cursor:pointer;
-}
+button{width:100%;padding:12px;border:none;border-radius:8px;background:#1e88e5;color:white;font-size:16px;margin-top:8px;cursor:pointer}
+input,select{width:100%;padding:8px;margin:5px 0}
+.answer{border:1px solid #ccc;padding:10px;margin:6px 0;border-radius:6px;cursor:pointer}
 .answer:hover{background:#e3f2fd}
 .correct{background:#43a047;color:white}
 .wrong{background:#e53935;color:white}
 .progress{height:8px;background:#ddd;border-radius:6px;overflow:hidden}
 .bar{height:100%;background:#1e88e5;width:0%}
 .hidden{display:none}
-.list{background:#f5f5f5;padding:8px;margin:6px 0;border-radius:6px}
+.list{background:#f5f5f5;padding:8px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
-
 <body>
 
 <!-- MENU -->
 <div class="box" id="menu">
 <h2>📘 HỆ THỐNG TRẮC NGHIỆM</h2>
-<button onclick="openTeacher()">🧑‍🏫 GIÁO VIÊN</button>
+<button onclick="loginTeacher()">🧑‍🏫 GIÁO VIÊN</button>
 <button onclick="openStudent()">👨‍🎓 HỌC SINH</button>
+</div>
+
+<!-- ĐĂNG NHẬP GIÁO VIÊN -->
+<div class="box hidden" id="login">
+<h2>🔒 Đăng nhập giáo viên</h2>
+<input type="password" id="pwd" placeholder="Nhập mật khẩu giáo viên">
+<button onclick="checkPwd()">Đăng nhập</button>
+<button onclick="backMenu()">⬅ Quay lại MENU</button>
 </div>
 
 <!-- GIÁO VIÊN -->
 <div class="box hidden" id="teacher">
 <h2>🧑‍🏫 SOẠN ĐỀ</h2>
-
 <select id="subject">
-<option value="dia">📘 Địa Lí</option>
-<option value="su">📕 Lịch Sử</option>
-<option value="sinh">📗 Sinh Học</option>
-<option value="hoa">📙 Hóa Học</option>
+<option value="toan">📘 Toán</option>
+<option value="nguvan">📕 Ngữ Văn</option>
+<option value="hoa">📗 Hóa</option>
+<option value="sinh">📙 Sinh</option>
+<option value="su">📓 Sử</option>
+<option value="dia">📔 Địa</option>
+<option value="vatly">📒 Vật Lý</option>
 </select>
-
 <input id="q" placeholder="Nhập câu hỏi">
 <input id="a1" placeholder="Đáp án A">
 <input id="a2" placeholder="Đáp án B">
 <input id="a3" placeholder="Đáp án C">
 <input id="a4" placeholder="Đáp án D">
-
 <select id="correct">
 <option value="0">Đúng: A</option>
 <option value="1">Đúng: B</option>
 <option value="2">Đúng: C</option>
 <option value="3">Đúng: D</option>
 </select>
-
 <button onclick="addQuestion()">➕ Lưu câu hỏi</button>
 <button onclick="loadList()">📄 Xem / Xoá câu hỏi</button>
-<button onclick="back()">⬅ Quay lại</button>
-
+<button onclick="backMenu()">⬅ Quay lại MENU</button>
 <div id="list"></div>
 </div>
 
 <!-- HỌC SINH -->
 <div class="box hidden" id="student">
 <h2>📘 LÀM BÀI</h2>
-
 <select id="subChoose">
-<option value="dia">📘 Địa Lí</option>
-<option value="su">📕 Lịch Sử</option>
-<option value="sinh">📗 Sinh Học</option>
-<option value="hoa">📙 Hóa Học</option>
+<option value="toan">📘 Toán</option>
+<option value="nguvan">📕 Ngữ Văn</option>
+<option value="hoa">📗 Hóa</option>
+<option value="sinh">📙 Sinh</option>
+<option value="su">📓 Sử</option>
+<option value="dia">📔 Địa</option>
+<option value="vatly">📒 Vật Lý</option>
 </select>
-
 <button onclick="startQuiz()">▶ Bắt đầu</button>
-
 <div class="progress"><div class="bar" id="bar"></div></div>
 <div id="quiz"></div>
 <button onclick="next()">Tiếp theo</button>
 <div id="result"></div>
+<button class="hidden" id="backStudent" onclick="backMenu()">⬅ Quay lại MENU</button>
 </div>
 
 <audio id="ting" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 <audio id="wrong" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
 <script>
+const teacherPwd="123456"; // Mật khẩu giáo viên
 let questions=[],i=0,score=0,selected=-1;
 
-function openTeacher(){
- menu.classList.add("hidden");
- teacher.classList.remove("hidden");
+// ===== MENU =====
+function backMenu(){
+    menu.classList.remove("hidden");
+    login.classList.add("hidden");
+    teacher.classList.add("hidden");
+    student.classList.add("hidden");
+    document.getElementById("result").innerHTML="";
+    document.getElementById("quiz").innerHTML="";
+    document.getElementById("bar").style.width="0%";
 }
 
-function openStudent(){
- menu.classList.add("hidden");
- student.classList.remove("hidden");
+// ===== GIÁO VIÊN =====
+function loginTeacher(){
+    menu.classList.add("hidden");
+    login.classList.remove("hidden");
+}
+function checkPwd(){
+    if(document.getElementById("pwd").value===teacherPwd){
+        login.classList.add("hidden");
+        teacher.classList.remove("hidden");
+        document.getElementById("pwd").value="";
+    }else{
+        alert("Sai mật khẩu!");
+    }
 }
 
-function back(){location.reload();}
-
-// ==== GIÁO VIÊN ====
 function getData(){
- let sub=document.getElementById("subject").value;
- return JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
+    let sub=document.getElementById("subject").value;
+    return JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
 }
-
 function saveData(data){
- let sub=document.getElementById("subject").value;
- localStorage.setItem("quiz_"+sub,JSON.stringify(data));
+    let sub=document.getElementById("subject").value;
+    localStorage.setItem("quiz_"+sub,JSON.stringify(data));
 }
 
 function addQuestion(){
- let data=getData();
- data.push({
-   q:q.value,
-   a:[a1.value,a2.value,a3.value,a4.value],
-   c:parseInt(correct.value)
- });
- saveData(data);
- alert("Đã lưu!");
- q.value=a1.value=a2.value=a3.value=a4.value="";
+    let data=getData();
+    let qVal=document.getElementById("q").value;
+    let a1Val=document.getElementById("a1").value;
+    let a2Val=document.getElementById("a2").value;
+    let a3Val=document.getElementById("a3").value;
+    let a4Val=document.getElementById("a4").value;
+    if(!qVal || !a1Val || !a2Val || !a3Val || !a4Val){alert("Vui lòng nhập đầy đủ!"); return;}
+    data.push({q:qVal,a:[a1Val,a2Val,a3Val,a4Val],c:parseInt(document.getElementById("correct").value)});
+    saveData(data);
+    alert("Đã lưu!");
+    document.getElementById("q").value=document.getElementById("a1").value=document.getElementById("a2").value=document.getElementById("a3").value=document.getElementById("a4").value="";
 }
 
 function loadList(){
- let data=getData();
- list.innerHTML="";
- data.forEach((x,i)=>{
-   list.innerHTML+=`
-   <div class="list">
-   ${i+1}. ${x.q}
-   <button onclick="del(${i})">❌ Xoá</button>
-   </div>`;
- });
+    let data=getData();
+    let listDiv=document.getElementById("list");
+    listDiv.innerHTML="";
+    if(data.length===0){listDiv.innerHTML="Chưa có câu hỏi!"; return;}
+    data.forEach((x,index)=>{
+        let div=document.createElement("div");
+        div.className="list";
+        div.innerHTML=`<span>${index+1}. ${x.q}</span><button onclick="del(${index})">❌ Xoá</button>`;
+        listDiv.appendChild(div);
+    });
 }
 
-function del(i){
- let data=getData();
- data.splice(i,1);
- saveData(data);
- loadList();
+function del(index){
+    let data=getData();
+    data.splice(index,1);
+    saveData(data);
+    loadList();
 }
 
-// ==== HỌC SINH ====
+// ===== HỌC SINH =====
 function startQuiz(){
- let sub=subChoose.value;
- questions=JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
- if(questions.length==0){alert("Chưa có đề!");return;}
- i=0;score=0;
- loadQ();
+    let sub=document.getElementById("subChoose").value;
+    questions=JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
+    if(questions.length===0){alert("Chưa có đề!"); return;}
+    i=0;score=0;selected=-1;
+    document.getElementById("backStudent").classList.add("hidden");
+    loadQ();
 }
 
 function loadQ(){
- let q=questions[i];
- quiz.innerHTML=`<b>Câu ${i+1}: ${q.q}</b>`;
- q.a.forEach((x,j)=>{
-   quiz.innerHTML+=`<div class="answer" onclick="choose(${j},this)">${x}</div>`;
- });
- bar.style.width=(i/questions.length*100)+"%";
+    let q=questions[i];
+    let quizDiv=document.getElementById("quiz");
+    quizDiv.innerHTML=`<b>Câu ${i+1}: ${q.q}</b>`;
+    q.a.forEach((x,j)=>{quizDiv.innerHTML+=`<div class="answer" onclick="choose(${j},this)">${x}</div>`;});
+    document.getElementById("bar").style.width=(i/questions.length*100)+"%";
 }
 
 function choose(j,el){
- selected=j;
- document.querySelectorAll(".answer").forEach(e=>e.classList.remove("active"));
- el.classList.add("active");
+    selected=j;
+    document.querySelectorAll(".answer").forEach(e=>e.classList.remove("active"));
+    el.classList.add("active");
 }
 
 function next(){
- if(selected==-1){alert("Chọn đáp án");return;}
- let q=questions[i];
- let ans=document.querySelectorAll(".answer");
- if(selected==q.c){
-   ans[selected].classList.add("correct");
-   ting.play();score++;
- }else{
-   ans[selected].classList.add("wrong");
-   wrong.play();
- }
- setTimeout(()=>{
-   i++;selected=-1;
-   if(i<questions.length) loadQ();
-   else quiz.innerHTML=`🎉 Hoàn thành<br>Điểm: <b>${score}/${questions.length}</b>`;
- },600);
+    if(selected===-1){alert("Chọn đáp án!"); return;}
+    let q=questions[i];
+    let ans=document.querySelectorAll(".answer");
+    if(selected===q.c){ans[selected].classList.add("correct"); ting.play(); score++;}
+    else{ans[selected].classList.add("wrong"); wrong.play();}
+    setTimeout(()=>{
+        i++; selected=-1;
+        if(i<questions.length) loadQ();
+        else{
+            document.getElementById("quiz").innerHTML="";
+            document.getElementById("result").innerHTML=`🎉 Hoàn thành<br>Điểm: <b>${score}/${questions.length}</b>`;
+            document.getElementById("backStudent").classList.remove("hidden");
+            document.getElementById("bar").style.width="100%";
+        }
+    },600);
 }
 </script>
 </body>
