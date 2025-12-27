@@ -5,33 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hệ Thống Trắc Nghiệm</title>
 <style>
-body{margin:0;font-family:Arial;background:linear-gradient(135deg,#2196f3,#00bcd4);}
-.box{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.3);}
-h2{text-align:center;color:#1565c0}
-button{width:100%;padding:12px;border:none;border-radius:8px;background:#1e88e5;color:white;font-size:16px;margin-top:8px;cursor:pointer}
-input,select{width:100%;padding:8px;margin:5px 0}
-.answer{border:1px solid #ccc;padding:10px;margin:6px 0;border-radius:6px;cursor:pointer}
-.answer:hover{background:#e3f2fd}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background: linear-gradient(135deg,#2196f3,#00bcd4);
+  color:#333;
+}
+.box{
+  max-width:900px;
+  margin:20px auto;
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+  position:relative;
+}
+h2{text-align:center;color:#1565c0;margin-bottom:20px}
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#1e88e5;
+  color:white;
+  font-size:16px;
+  margin:6px 0;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{background:#1565c0}
+input,select{
+  width:100%;
+  padding:8px;
+  margin:5px 0;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+.answer{
+  border:1px solid #ccc;
+  padding:10px;
+  margin:6px 0;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.answer:hover{background:#e3f2fd; transform:scale(1.02);}
 .correct{background:#43a047;color:white}
 .wrong{background:#e53935;color:white}
-.progress{height:8px;background:#ddd;border-radius:6px;overflow:hidden}
+.progress{height:10px;background:#ddd;border-radius:6px;overflow:hidden;margin:10px 0;}
 .bar{height:100%;background:#1e88e5;width:0%}
 .hidden{display:none}
-.list{background:#f5f5f5;padding:8px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+.list{background:#f5f5f5;padding:8px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center;box-shadow:1px 1px 5px rgba(0,0,0,0.1);}
+header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius:10px;text-align:center;font-size:18px;font-weight:bold;}
 </style>
 </head>
 <body>
 
 <!-- MENU -->
 <div class="box" id="menu">
-<h2>📘 HỆ THỐNG TRẮC NGHIỆM</h2>
+<header>📘 HỆ THỐNG TRẮC NGHIỆM CHUYÊN NGHIỆP</header>
 <button onclick="loginTeacher()">🧑‍🏫 GIÁO VIÊN</button>
 <button onclick="openStudent()">👨‍🎓 HỌC SINH</button>
 </div>
 
-<!-- ĐĂNG NHẬP GIÁO VIÊN -->
+<!-- LOGIN GIÁO VIÊN -->
 <div class="box hidden" id="login">
-<h2>🔒 Đăng nhập giáo viên</h2>
+<header>🔒 Đăng nhập giáo viên</header>
 <input type="password" id="pwd" placeholder="Nhập mật khẩu giáo viên">
 <button onclick="checkPwd()">Đăng nhập</button>
 <button onclick="backMenu()">⬅ Quay lại MENU</button>
@@ -39,7 +78,7 @@ input,select{width:100%;padding:8px;margin:5px 0}
 
 <!-- GIÁO VIÊN -->
 <div class="box hidden" id="teacher">
-<h2>🧑‍🏫 SOẠN ĐỀ</h2>
+<header>🧑‍🏫 SOẠN ĐỀ</header>
 <select id="subject">
 <option value="toan">📘 Toán</option>
 <option value="nguvan">📕 Ngữ Văn</option>
@@ -68,7 +107,7 @@ input,select{width:100%;padding:8px;margin:5px 0}
 
 <!-- HỌC SINH -->
 <div class="box hidden" id="student">
-<h2>📘 LÀM BÀI</h2>
+<header>📘 LÀM BÀI</header>
 <select id="subChoose">
 <option value="toan">📘 Toán</option>
 <option value="nguvan">📕 Ngữ Văn</option>
@@ -81,7 +120,7 @@ input,select{width:100%;padding:8px;margin:5px 0}
 <button onclick="startQuiz()">▶ Bắt đầu</button>
 <div class="progress"><div class="bar" id="bar"></div></div>
 <div id="quiz"></div>
-<button onclick="next()">Tiếp theo</button>
+<button onclick="next()" id="nextBtn">Tiếp theo</button>
 <div id="result"></div>
 <button class="hidden" id="backStudent" onclick="backMenu()">⬅ Quay lại MENU</button>
 </div>
@@ -90,7 +129,7 @@ input,select{width:100%;padding:8px;margin:5px 0}
 <audio id="wrong" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
 <script>
-const teacherPwd="123456"; // Mật khẩu giáo viên
+const teacherPwd="123456"; 
 let questions=[],i=0,score=0,selected=-1;
 
 // ===== MENU =====
@@ -102,6 +141,8 @@ function backMenu(){
     document.getElementById("result").innerHTML="";
     document.getElementById("quiz").innerHTML="";
     document.getElementById("bar").style.width="0%";
+    document.getElementById("backStudent").classList.add("hidden");
+    document.getElementById("nextBtn").classList.remove("hidden");
 }
 
 // ===== GIÁO VIÊN =====
@@ -135,7 +176,7 @@ function addQuestion(){
     let a2Val=document.getElementById("a2").value;
     let a3Val=document.getElementById("a3").value;
     let a4Val=document.getElementById("a4").value;
-    if(!qVal || !a1Val || !a2Val || !a3Val || !a4Val){alert("Vui lòng nhập đầy đủ!"); return;}
+    if(!qVal||!a1Val||!a2Val||!a3Val||!a4Val){alert("Vui lòng nhập đầy đủ!"); return;}
     data.push({q:qVal,a:[a1Val,a2Val,a3Val,a4Val],c:parseInt(document.getElementById("correct").value)});
     saveData(data);
     alert("Đã lưu!");
@@ -154,7 +195,6 @@ function loadList(){
         listDiv.appendChild(div);
     });
 }
-
 function del(index){
     let data=getData();
     data.splice(index,1);
@@ -163,12 +203,20 @@ function del(index){
 }
 
 // ===== HỌC SINH =====
+function openStudent(){
+    menu.classList.add("hidden");
+    student.classList.remove("hidden");
+    document.getElementById("quiz").innerHTML="";
+    document.getElementById("result").innerHTML="";
+}
+
 function startQuiz(){
     let sub=document.getElementById("subChoose").value;
     questions=JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
     if(questions.length===0){alert("Chưa có đề!"); return;}
     i=0;score=0;selected=-1;
     document.getElementById("backStudent").classList.add("hidden");
+    document.getElementById("nextBtn").classList.remove("hidden");
     loadQ();
 }
 
@@ -199,6 +247,7 @@ function next(){
             document.getElementById("quiz").innerHTML="";
             document.getElementById("result").innerHTML=`🎉 Hoàn thành<br>Điểm: <b>${score}/${questions.length}</b>`;
             document.getElementById("backStudent").classList.remove("hidden");
+            document.getElementById("nextBtn").classList.add("hidden");
             document.getElementById("bar").style.width="100%";
         }
     },600);
