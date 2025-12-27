@@ -3,52 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hệ Thống Trắc Nghiệm</title>
+<title>Hệ Thống Trắc Nghiệm Full</title>
 <style>
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background: linear-gradient(135deg,#2196f3,#00bcd4);
-  color:#333;
-}
-.box{
-  max-width:900px;
-  margin:20px auto;
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.3);
-  position:relative;
-}
+body{margin:0;font-family:Arial,sans-serif;background: linear-gradient(135deg,#2196f3,#00bcd4);color:#333;}
+.box{max-width:900px;margin:20px auto;background:white;padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.3);position:relative;}
 h2{text-align:center;color:#1565c0;margin-bottom:20px}
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#1e88e5;
-  color:white;
-  font-size:16px;
-  margin:6px 0;
-  cursor:pointer;
-  transition:0.3s;
-}
+button{width:100%;padding:12px;border:none;border-radius:8px;background:#1e88e5;color:white;font-size:16px;margin:6px 0;cursor:pointer;transition:0.3s}
 button:hover{background:#1565c0}
-input,select{
-  width:100%;
-  padding:8px;
-  margin:5px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-.answer{
-  border:1px solid #ccc;
-  padding:10px;
-  margin:6px 0;
-  border-radius:6px;
-  cursor:pointer;
-  transition:0.2s;
-}
+input,select{width:100%;padding:8px;margin:5px 0;border-radius:6px;border:1px solid #ccc;}
+.answer{border:1px solid #ccc;padding:10px;margin:6px 0;border-radius:6px;cursor:pointer;transition:0.2s;}
 .answer:hover{background:#e3f2fd; transform:scale(1.02);}
 .correct{background:#43a047;color:white}
 .wrong{background:#e53935;color:white}
@@ -57,6 +20,11 @@ input,select{
 .hidden{display:none}
 .list{background:#f5f5f5;padding:8px;margin:6px 0;border-radius:6px;display:flex;justify-content:space-between;align-items:center;box-shadow:1px 1px 5px rgba(0,0,0,0.1);}
 header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius:10px;text-align:center;font-size:18px;font-weight:bold;}
+hr{margin:20px 0;}
+table{width:100%;border-collapse:collapse;}
+table,th,td{border:1px solid #ccc;}
+th,td{padding:8px;text-align:left;}
+th{background:#1e88e5;color:white;}
 </style>
 </head>
 <body>
@@ -78,7 +46,9 @@ header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius
 
 <!-- GIÁO VIÊN -->
 <div class="box hidden" id="teacher">
-<header>🧑‍🏫 SOẠN ĐỀ</header>
+<header>🧑‍🏫 SOẠN ĐỀ / XEM ĐIỂM</header>
+
+<h3>📄 Quản lý câu hỏi</h3>
 <select id="subject">
 <option value="toan">📘 Toán</option>
 <option value="nguvan">📕 Ngữ Văn</option>
@@ -88,6 +58,7 @@ header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius
 <option value="dia">📔 Địa</option>
 <option value="vatly">📒 Vật Lý</option>
 </select>
+<label><input type="checkbox" id="limitOnce"> Chỉ cho phép học sinh làm môn này 1 lần trên thiết bị</label>
 <input id="q" placeholder="Nhập câu hỏi">
 <input id="a1" placeholder="Đáp án A">
 <input id="a2" placeholder="Đáp án B">
@@ -101,6 +72,26 @@ header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius
 </select>
 <button onclick="addQuestion()">➕ Lưu câu hỏi</button>
 <button onclick="loadList()">📄 Xem / Xoá câu hỏi</button>
+
+<hr>
+<h3>📂 Import đề cương</h3>
+<input type="file" id="fileInput" accept=".json">
+<button onclick="importFile()">📂 Import đề cương</button>
+
+<hr>
+<h3>📊 Điểm học sinh</h3>
+<select id="scoreSubject">
+<option value="toan">📘 Toán</option>
+<option value="nguvan">📕 Ngữ Văn</option>
+<option value="hoa">📗 Hóa</option>
+<option value="sinh">📙 Sinh</option>
+<option value="su">📓 Sử</option>
+<option value="dia">📔 Địa</option>
+<option value="vatly">📒 Vật Lý</option>
+</select>
+<button onclick="loadScores()">Xem điểm</button>
+<div id="scores"></div>
+
 <button onclick="backMenu()">⬅ Quay lại MENU</button>
 <div id="list"></div>
 </div>
@@ -108,6 +99,7 @@ header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius
 <!-- HỌC SINH -->
 <div class="box hidden" id="student">
 <header>📘 LÀM BÀI</header>
+<input id="studentName" placeholder="Nhập tên học sinh">
 <select id="subChoose">
 <option value="toan">📘 Toán</option>
 <option value="nguvan">📕 Ngữ Văn</option>
@@ -125,12 +117,14 @@ header{background:rgba(0,0,0,0.05);padding:10px;margin-bottom:20px;border-radius
 <button class="hidden" id="backStudent" onclick="backMenu()">⬅ Quay lại MENU</button>
 </div>
 
-<audio id="ting" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-<audio id="wrong" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+<!-- Âm thanh mới -->
+<audio id="ting" src="https://freesound.org/data/previews/341/341695_6261545-lq.mp3"></audio>
+<audio id="wrong" src="https://freesound.org/data/previews/456/456618_7037-lq.mp3"></audio>
 
 <script>
 const teacherPwd="123456"; 
 let questions=[],i=0,score=0,selected=-1;
+let studentName="";
 
 // ===== MENU =====
 function backMenu(){
@@ -167,6 +161,12 @@ function getData(){
 function saveData(data){
     let sub=document.getElementById("subject").value;
     localStorage.setItem("quiz_"+sub,JSON.stringify(data));
+    // lưu giới hạn 1 lần nếu tick
+    if(document.getElementById("limitOnce").checked){
+        localStorage.setItem("limit_"+sub,"true");
+    } else {
+        localStorage.removeItem("limit_"+sub);
+    }
 }
 
 function addQuestion(){
@@ -195,11 +195,46 @@ function loadList(){
         listDiv.appendChild(div);
     });
 }
+
 function del(index){
     let data=getData();
     data.splice(index,1);
     saveData(data);
     loadList();
+}
+
+// ===== IMPORT FILE JSON =====
+function importFile(){
+  const file=document.getElementById("fileInput").files[0];
+  if(!file){alert("Chọn file trước!"); return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!Array.isArray(data)) throw "File không hợp lệ";
+      let current=getData();
+      current=current.concat(data);
+      saveData(current);
+      alert("Import thành công "+data.length+" câu!");
+      loadList();
+    }catch(err){
+      alert("File không hợp lệ: "+err);
+    }
+  }
+  reader.readAsText(file);
+}
+
+// ===== XEM ĐIỂM =====
+function loadScores(){
+    let sub=document.getElementById("scoreSubject").value;
+    let scores=JSON.parse(localStorage.getItem("score_"+sub)||"[]");
+    let div=document.getElementById("scores");
+    if(scores.length===0){div.innerHTML="Chưa có học sinh nào làm bài."; return;}
+    scores.sort((a,b)=>new Date(b.date)-new Date(a.date));
+    let html="<table><tr><th>Tên</th><th>Điểm</th><th>Tổng</th><th>Ngày giờ</th></tr>";
+    scores.forEach(s=>{html+=`<tr><td>${s.name}</td><td>${s.score}</td><td>${s.total}</td><td>${s.date}</td></tr>`;});
+    html+="</table>";
+    div.innerHTML=html;
 }
 
 // ===== HỌC SINH =====
@@ -211,7 +246,16 @@ function openStudent(){
 }
 
 function startQuiz(){
+    studentName=document.getElementById("studentName").value.trim();
+    if(studentName===""){alert("Nhập tên học sinh trước!"); return;}
     let sub=document.getElementById("subChoose").value;
+
+    // kiểm tra giới hạn 1 lần
+    if(localStorage.getItem("limit_"+sub) && localStorage.getItem("done_"+sub)){
+        alert("Bạn chỉ được làm môn này 1 lần trên thiết bị này!");
+        return;
+    }
+
     questions=JSON.parse(localStorage.getItem("quiz_"+sub)||"[]");
     if(questions.length===0){alert("Chưa có đề!"); return;}
     i=0;score=0;selected=-1;
@@ -238,8 +282,8 @@ function next(){
     if(selected===-1){alert("Chọn đáp án!"); return;}
     let q=questions[i];
     let ans=document.querySelectorAll(".answer");
-    if(selected===q.c){ans[selected].classList.add("correct"); ting.play(); score++;}
-    else{ans[selected].classList.add("wrong"); wrong.play();}
+    if(selected===q.c){ans[selected].classList.add("correct"); document.getElementById("ting").play(); score++;}
+    else{ans[selected].classList.add("wrong"); document.getElementById("wrong").play();}
     setTimeout(()=>{
         i++; selected=-1;
         if(i<questions.length) loadQ();
@@ -249,8 +293,22 @@ function next(){
             document.getElementById("backStudent").classList.remove("hidden");
             document.getElementById("nextBtn").classList.add("hidden");
             document.getElementById("bar").style.width="100%";
+            saveStudentScore();
         }
     },600);
+}
+
+function saveStudentScore(){
+    let sub=document.getElementById("subChoose").value;
+    let scores=JSON.parse(localStorage.getItem("score_"+sub)||"[]");
+    let now=new Date();
+    scores.push({name:studentName,score:score,total:questions.length,date:now.toLocaleString()});
+    localStorage.setItem("score_"+sub,JSON.stringify(scores));
+
+    // đánh dấu đã làm nếu giới hạn 1 lần
+    if(localStorage.getItem("limit_"+sub)){
+        localStorage.setItem("done_"+sub,"true");
+    }
 }
 </script>
 </body>
