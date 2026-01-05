@@ -2,206 +2,302 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hệ Thống Trắc Nghiệm</title>
+<title>⚡ PRO SOFTWARE SYSTEM ⚡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:linear-gradient(135deg,#2196f3,#00bcd4)}
-.box{max-width:900px;margin:20px auto;background:#fff;padding:20px;border-radius:12px}
-button{width:100%;padding:12px;border:none;border-radius:8px;background:#1e88e5;color:white;margin:5px 0}
-button:hover{background:#1565c0}
-input,select{width:100%;padding:8px;margin:5px 0;border-radius:6px;border:1px solid #ccc}
-.answer{border:1px solid #ccc;padding:10px;margin:6px 0;border-radius:6px;cursor:pointer}
-.answer:hover{background:#e3f2fd}
-.correct{background:#43a047;color:white}
-.wrong{background:#e53935;color:white}
+:root{
+ --bg:#05050a;
+ --neon:#00fff7;
+ --pink:#ff2fff;
+ --yellow:#ffe600;
+ --card:#0d0d1a;
+}
+*{box-sizing:border-box;font-family:Segoe UI,Arial}
+body{
+ margin:0;
+ background:radial-gradient(circle at top,#111,#000);
+ color:#fff;
+ overflow-x:hidden;
+}
 .hidden{display:none}
-.progress{height:10px;background:#ddd;border-radius:6px;margin:10px 0}
-.bar{height:100%;background:#1e88e5;width:0%}
-table{width:100%;border-collapse:collapse}
-th,td{border:1px solid #ccc;padding:6px}
-th{background:#1e88e5;color:white}
+
+/* ===== NEON TITLE ===== */
+.logo{
+ text-align:center;
+ font-size:32px;
+ margin:20px 0;
+ font-weight:900;
+ color:var(--neon);
+ text-shadow:0 0 10px var(--neon),0 0 30px var(--pink);
+ animation:flicker 2s infinite;
+}
+@keyframes flicker{
+ 0%,100%{opacity:1}
+ 50%{opacity:.7}
+}
+
+/* ===== BUTTON ===== */
+.btn{
+ padding:12px 20px;
+ border:none;
+ border-radius:8px;
+ background:linear-gradient(135deg,var(--neon),var(--pink));
+ color:#000;
+ font-weight:700;
+ cursor:pointer;
+ box-shadow:0 0 15px var(--neon);
+ transition:.3s;
+}
+.btn:hover{
+ transform:scale(1.05);
+ box-shadow:0 0 30px var(--pink);
+}
+
+/* ===== LOGIN ===== */
+.auth-box{
+ max-width:420px;
+ margin:40px auto;
+ background:var(--card);
+ padding:25px;
+ border-radius:15px;
+ box-shadow:0 0 40px #000;
+}
+.auth-box h2{text-align:center}
+input{
+ width:100%;
+ padding:12px;
+ margin:8px 0;
+ border-radius:8px;
+ border:none;
+ background:#000;
+ color:#0ff;
+ outline:none;
+ box-shadow:inset 0 0 10px #000;
+}
+
+/* ===== MENU ===== */
+nav{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin:15px 0;
+}
+nav .btn{font-size:14px}
+
+/* ===== CARD ===== */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+ gap:20px;
+ padding:20px;
+}
+.card{
+ background:var(--card);
+ padding:18px;
+ border-radius:15px;
+ position:relative;
+ box-shadow:0 0 15px #000;
+}
+.card::before{
+ content:"";
+ position:absolute;
+ inset:-2px;
+ border-radius:18px;
+ background:linear-gradient(90deg,transparent,var(--neon),transparent);
+ animation:borderRun 3s linear infinite;
+ z-index:-1;
+}
+@keyframes borderRun{
+ 0%{background-position:0}
+ 100%{background-position:400px}
+}
+.price{
+ color:var(--yellow);
+ font-size:18px;
+ font-weight:700;
+}
+
+/* ===== ADMIN ===== */
+.admin-panel{
+ background:#080812;
+ margin:20px;
+ padding:20px;
+ border-radius:15px;
+}
+
+/* ===== TOAST ===== */
+.toast{
+ position:fixed;
+ top:20px;
+ right:20px;
+ background:#000;
+ padding:15px 20px;
+ border-radius:10px;
+ box-shadow:0 0 20px var(--neon);
+ animation:fade 3s forwards;
+}
+@keyframes fade{
+ 0%{opacity:1}
+ 100%{opacity:0;top:0}
+}
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
-<div class="box" id="menu">
-<h2>📘 HỆ THỐNG TRẮC NGHIỆM</h2>
-<button onclick="loginTeacher()">👨‍🏫 Giáo viên</button>
-<button onclick="openStudent()">👨‍🎓 Học sinh</button>
-</div>
+<div class="logo">⚡ PRO SOFTWARE SYSTEM ⚡</div>
 
 <!-- LOGIN -->
-<div class="box hidden" id="login">
-<input id="pwd" type="password" placeholder="Mật khẩu giáo viên">
-<button onclick="checkPwd()">Đăng nhập</button>
-<button onclick="backMenu()">⬅ Quay lại</button>
+<div id="auth" class="auth-box">
+<h2>LOGIN / REGISTER</h2>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn" onclick="login()">LOGIN</button>
+<button class="btn" onclick="register()">REGISTER</button>
 </div>
 
-<!-- GIÁO VIÊN -->
-<div class="box hidden" id="teacher">
-<h3>🧑‍🏫 Quản lý câu hỏi</h3>
+<!-- USER -->
+<div id="userApp" class="hidden">
+<nav>
+<button class="btn" onclick="show('shop')">SHOP</button>
+<button class="btn" onclick="show('wallet')">NẠP TIỀN</button>
+<button class="btn" onclick="show('orders')">ĐÃ MUA</button>
+<button class="btn" onclick="logout()">LOGOUT</button>
+</nav>
 
-<select id="subject">
-<option value="toan">Toán</option>
-<option value="van">Ngữ Văn</option>
-<option value="anh">Tiếng Anh</option>
-<option value="ly">Vật Lý</option>
-<option value="hoa">Hóa</option>
-<option value="sinh">Sinh</option>
-<option value="su">Lịch Sử</option>
-</select>
+<div id="shop" class="grid"></div>
 
-<input id="q" placeholder="Câu hỏi">
-<input id="a1" placeholder="Đáp án A">
-<input id="a2" placeholder="Đáp án B">
-<input id="a3" placeholder="Đáp án C">
-<input id="a4" placeholder="Đáp án D">
+<div id="wallet" class="hidden" style="padding:20px">
+<h3>SỐ DƯ: <span id="balance"></span>₫</h3>
+<p>Nội dung chuyển khoản: <b id="ck"></b></p>
+<img id="qr" width="220">
+</div>
 
-<select id="correct">
-<option value="0">Đúng A</option>
-<option value="1">Đúng B</option>
-<option value="2">Đúng C</option>
-<option value="3">Đúng D</option>
-</select>
+<div id="orders" class="grid hidden"></div>
+</div>
 
-<button onclick="addQuestion()">➕ Thêm câu hỏi</button>
-<button onclick="loadList()">📄 Xem câu hỏi</button>
-
-<div id="list"></div>
-
+<!-- ADMIN -->
+<div id="adminApp" class="hidden admin-panel">
+<h2>ADMIN PANEL</h2>
+<div id="adminUsers"></div>
 <hr>
-<h3>📊 Kết quả học sinh</h3>
-<button onclick="loadScores()">Xem kết quả</button>
-<div id="scores"></div>
-
-<button onclick="backMenu()">⬅ Quay lại</button>
-</div>
-
-<!-- HỌC SINH -->
-<div class="box hidden" id="student">
-<h3>📘 Làm bài</h3>
-<input id="studentName" placeholder="Nhập tên">
-<select id="subChoose">
-<option value="toan">Toán</option>
-<option value="van">Ngữ Văn</option>
-<option value="anh">Tiếng Anh</option>
-<option value="ly">Vật Lý</option>
-<option value="hoa">Hóa</option>
-<option value="sinh">Sinh</option>
-<option value="su">Lịch Sử</option>
-</select>
-
-<button onclick="startQuiz()">▶ Bắt đầu</button>
-
-<div class="progress"><div class="bar" id="bar"></div></div>
-<div id="quiz"></div>
-<button onclick="next()">Tiếp theo</button>
-<div id="result"></div>
+<h3>THÊM SẢN PHẨM</h3>
+<input id="pname" placeholder="Tên">
+<input id="pdesc" placeholder="Mô tả">
+<input id="pprice" placeholder="Giá">
+<input id="plink" placeholder="Link .mobileconfig">
+<button class="btn" onclick="addProduct()">THÊM</button>
 </div>
 
 <script>
-const teacherPwd="14032008";
-let questions=[],i=0,score=0,selected=-1;
+/* ===== DATA ===== */
+const ADMIN={u:"thanhdat08",p:"dat1234"};
+let users=JSON.parse(localStorage.users||"{}");
+let products=JSON.parse(localStorage.products||"[]");
 
-function backMenu(){
-menu.classList.remove("hidden");
-login.classList.add("hidden");
-teacher.classList.add("hidden");
-student.classList.add("hidden");
-}
-
-function loginTeacher(){
-menu.classList.add("hidden");
-login.classList.remove("hidden");
+if(products.length==0){
+ for(let i=1;i<=10;i++)
+ products.push({name:"Software "+i,desc:"Mô tả phần mềm "+i,price:50000*i,link:"#"});
+ localStorage.products=JSON.stringify(products);
 }
 
-function checkPwd(){
-if(pwd.value===teacherPwd){
-login.classList.add("hidden");
-teacher.classList.remove("hidden");
-}else alert("Sai mật khẩu!");
+/* ===== AUTH ===== */
+let current=null;
+function toast(t){
+ let d=document.createElement("div");
+ d.className="toast";d.innerText=t;
+ document.body.appendChild(d);
+ setTimeout(()=>d.remove(),3000);
+}
+function login(){
+ let u=user.value,p=pass.value;
+ if(u==ADMIN.u&&p==ADMIN.p){
+ auth.classList.add("hidden");
+ adminApp.classList.remove("hidden");
+ loadAdmin();
+ toast("ADMIN LOGIN OK");
+ return;
+ }
+ if(users[u]&&users[u].pass==p){
+ current=u;
+ auth.classList.add("hidden");
+ userApp.classList.remove("hidden");
+ loadShop();loadWallet();
+ toast("LOGIN OK");
+ }else toast("SAI TK/MK");
+}
+function register(){
+ let u=user.value,p=pass.value;
+ if(users[u])return toast("Tồn tại");
+ users[u]={pass:p,balance:0,orders:[]};
+ localStorage.users=JSON.stringify(users);
+ toast("ĐĂNG KÝ OK");
+}
+function logout(){location.reload()}
+
+/* ===== USER ===== */
+function show(id){
+ ["shop","wallet","orders"].forEach(x=>document.getElementById(x).classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+}
+function loadShop(){
+ shop.innerHTML="";
+ products.forEach((p,i)=>{
+ let d=document.createElement("div");
+ d.className="card";
+ d.innerHTML=`<h3>${p.name}</h3><p>${p.desc}</p>
+ <div class="price">${p.price}₫</div>
+ <button class="btn" onclick="buy(${i})">MUA</button>`;
+ shop.appendChild(d);
+ });
+}
+function buy(i){
+ let p=products[i];
+ if(users[current].balance<p.price)return toast("KHÔNG ĐỦ TIỀN");
+ users[current].balance-=p.price;
+ users[current].orders.push(p);
+ localStorage.users=JSON.stringify(users);
+ loadWallet();loadOrders();
+ toast("MUA THÀNH CÔNG");
+}
+function loadWallet(){
+ balance.innerText=users[current].balance;
+ ck.innerText=current;
+ qr.src=localStorage.qr||"";
+}
+function loadOrders(){
+ orders.innerHTML="";
+ users[current].orders.forEach(o=>{
+ orders.innerHTML+=`<div class="card"><h3>${o.name}</h3>
+ <a class="btn" href="${o.link}" download>DOWNLOAD</a></div>`;
+ });
 }
 
-function getData(){
-return JSON.parse(localStorage.getItem("quiz_"+subject.value)||"[]");
+/* ===== ADMIN ===== */
+function loadAdmin(){
+ adminUsers.innerHTML="";
+ for(let u in users){
+ adminUsers.innerHTML+=`
+ <div class="card">${u} - ${users[u].balance}₫
+ <button class="btn" onclick="money('${u}',100000)">+100k</button>
+ <button class="btn" onclick="money('${u}',-100000)">-100k</button>
+ </div>`;
+ }
 }
-function saveData(d){
-localStorage.setItem("quiz_"+subject.value,JSON.stringify(d));
+function money(u,v){
+ users[u].balance+=v;
+ localStorage.users=JSON.stringify(users);
+ loadAdmin();toast("ĐÃ CẬP NHẬT");
 }
-
-function addQuestion(){
-let d=getData();
-d.push({q:q.value,a:[a1.value,a2.value,a3.value,a4.value],c:+correct.value});
-saveData(d);
-alert("Đã lưu câu hỏi");
-}
-
-function loadList(){
-let d=getData();
-list.innerHTML="";
-d.forEach((x,i)=>{
-list.innerHTML+=`<div>${i+1}. ${x.q}</div>`;
-});
-}
-
-function openStudent(){
-menu.classList.add("hidden");
-student.classList.remove("hidden");
-}
-
-function startQuiz(){
-let name=studentName.value;
-if(!name){alert("Nhập tên");return;}
-questions=JSON.parse(localStorage.getItem("quiz_"+subChoose.value)||"[]");
-if(!questions.length){alert("Chưa có câu hỏi");return;}
-i=0;score=0;
-loadQ();
-}
-
-function loadQ(){
-let q=questions[i];
-quiz.innerHTML=`<b>Câu ${i+1}: ${q.q}</b>`;
-q.a.forEach((x,j)=>{
-quiz.innerHTML+=`<div class="answer" onclick="choose(${j},this)">${x}</div>`;
-});
-bar.style.width=(i/questions.length*100)+"%";
-}
-
-function choose(j,e){
-selected=j;
-document.querySelectorAll(".answer").forEach(x=>x.classList.remove("correct","wrong"));
-if(j==questions[i].c) e.classList.add("correct");
-else e.classList.add("wrong");
-}
-
-function next(){
-if(selected==questions[i].c) score++;
-i++;
-if(i<questions.length) loadQ();
-else{
-let data=JSON.parse(localStorage.getItem("scores")||"[]");
-data.push({
-name:studentName.value,
-subject:subChoose.value,
-score:score,
-date:new Date().toLocaleString()
-});
-localStorage.setItem("scores",JSON.stringify(data));
-quiz.innerHTML="";
-result.innerHTML=`🎉 Hoàn thành<br>Điểm: ${score}/${questions.length}`;
-}
-}
-
-function loadScores(){
-let d=JSON.parse(localStorage.getItem("scores")||"[]");
-let html="<table><tr><th>Tên</th><th>Môn</th><th>Điểm</th><th>Ngày</th></tr>";
-d.forEach(x=>{
-html+=`<tr><td>${x.name}</td><td>${x.subject}</td><td>${x.score}</td><td>${x.date}</td></tr>`;
-});
-scores.innerHTML=html+"</table>";
+function addProduct(){
+ products.push({
+ name:pname.value,desc:pdesc.value,
+ price:+pprice.value,link:plink.value
+ });
+ localStorage.products=JSON.stringify(products);
+ toast("ĐÃ THÊM SẢN PHẨM");
 }
 </script>
 </body>
