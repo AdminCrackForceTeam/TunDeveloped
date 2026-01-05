@@ -3,301 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <title>⚡ PRO SOFTWARE SYSTEM ⚡</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-:root{
- --bg:#05050a;
- --neon:#00fff7;
- --pink:#ff2fff;
- --yellow:#ffe600;
- --card:#0d0d1a;
-}
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
-body{
- margin:0;
- background:radial-gradient(circle at top,#111,#000);
- color:#fff;
- overflow-x:hidden;
-}
+body{margin:0;background:#000;color:#0ff;font-family:Arial}
 .hidden{display:none}
-
-/* ===== NEON TITLE ===== */
-.logo{
- text-align:center;
- font-size:32px;
- margin:20px 0;
- font-weight:900;
- color:var(--neon);
- text-shadow:0 0 10px var(--neon),0 0 30px var(--pink);
- animation:flicker 2s infinite;
-}
-@keyframes flicker{
- 0%,100%{opacity:1}
- 50%{opacity:.7}
-}
-
-/* ===== BUTTON ===== */
-.btn{
- padding:12px 20px;
- border:none;
- border-radius:8px;
- background:linear-gradient(135deg,var(--neon),var(--pink));
- color:#000;
- font-weight:700;
- cursor:pointer;
- box-shadow:0 0 15px var(--neon);
- transition:.3s;
-}
-.btn:hover{
- transform:scale(1.05);
- box-shadow:0 0 30px var(--pink);
-}
-
-/* ===== LOGIN ===== */
-.auth-box{
- max-width:420px;
- margin:40px auto;
- background:var(--card);
- padding:25px;
- border-radius:15px;
- box-shadow:0 0 40px #000;
-}
-.auth-box h2{text-align:center}
-input{
- width:100%;
- padding:12px;
- margin:8px 0;
- border-radius:8px;
- border:none;
- background:#000;
- color:#0ff;
- outline:none;
- box-shadow:inset 0 0 10px #000;
-}
-
-/* ===== MENU ===== */
-nav{
- display:flex;
- justify-content:center;
- gap:10px;
- flex-wrap:wrap;
- margin:15px 0;
-}
-nav .btn{font-size:14px}
-
-/* ===== CARD ===== */
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
- gap:20px;
- padding:20px;
-}
-.card{
- background:var(--card);
- padding:18px;
- border-radius:15px;
- position:relative;
- box-shadow:0 0 15px #000;
-}
-.card::before{
- content:"";
- position:absolute;
- inset:-2px;
- border-radius:18px;
- background:linear-gradient(90deg,transparent,var(--neon),transparent);
- animation:borderRun 3s linear infinite;
- z-index:-1;
-}
-@keyframes borderRun{
- 0%{background-position:0}
- 100%{background-position:400px}
-}
-.price{
- color:var(--yellow);
- font-size:18px;
- font-weight:700;
-}
-
-/* ===== ADMIN ===== */
-.admin-panel{
- background:#080812;
- margin:20px;
- padding:20px;
- border-radius:15px;
-}
-
-/* ===== TOAST ===== */
-.toast{
- position:fixed;
- top:20px;
- right:20px;
- background:#000;
- padding:15px 20px;
- border-radius:10px;
- box-shadow:0 0 20px var(--neon);
- animation:fade 3s forwards;
-}
-@keyframes fade{
- 0%{opacity:1}
- 100%{opacity:0;top:0}
-}
+h2,h3{color:#0ff}
+input,select{width:100%;padding:10px;margin:5px 0;background:#000;color:#0ff;border:1px solid #0ff}
+button{padding:10px 15px;margin:5px;border:none;cursor:pointer;background:#0ff;color:#000;font-weight:bold}
+nav button{margin:5px}
+.card{border:1px solid #0ff;padding:15px;margin:10px;border-radius:8px}
+.popup{position:fixed;bottom:20px;right:20px;background:#111;padding:15px;border:1px solid #0ff;animation:float 2s infinite}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-5px)}100%{transform:translateY(0)}}
 </style>
 </head>
 
 <body>
 
-<div class="logo">⚡ PRO SOFTWARE SYSTEM ⚡</div>
+<h2 style="text-align:center">⚡ PRO SOFTWARE SYSTEM ⚡</h2>
+
+<!-- POPUP KHUYẾN MÃI -->
+<div class="popup" id="promo">🎁 Khuyến mãi 20% cho user mới!</div>
 
 <!-- LOGIN -->
-<div id="auth" class="auth-box">
-<h2>LOGIN / REGISTER</h2>
+<div id="auth" class="card">
+<h3>LOGIN / REGISTER</h3>
 <input id="user" placeholder="Username">
 <input id="pass" type="password" placeholder="Password">
-<button class="btn" onclick="login()">LOGIN</button>
-<button class="btn" onclick="register()">REGISTER</button>
+<button onclick="login()">LOGIN</button>
+<button onclick="register()">REGISTER</button>
 </div>
 
-<!-- USER -->
+<!-- USER APP -->
 <div id="userApp" class="hidden">
 <nav>
-<button class="btn" onclick="show('shop')">SHOP</button>
-<button class="btn" onclick="show('wallet')">NẠP TIỀN</button>
-<button class="btn" onclick="show('orders')">ĐÃ MUA</button>
-<button class="btn" onclick="logout()">LOGOUT</button>
+<button onclick="show('shop')">SHOP</button>
+<button onclick="show('wallet')">NẠP TIỀN</button>
+<button onclick="show('orders')">ĐÃ MUA</button>
+<button onclick="logout()">LOGOUT</button>
 </nav>
 
-<div id="shop" class="grid"></div>
+<div id="info" class="card"></div>
 
-<div id="wallet" class="hidden" style="padding:20px">
-<h3>SỐ DƯ: <span id="balance"></span>₫</h3>
-<p>Nội dung chuyển khoản: <b id="ck"></b></p>
-<img id="qr" width="220">
-</div>
-
-<div id="orders" class="grid hidden"></div>
+<div id="shop"></div>
+<div id="wallet" class="hidden card"></div>
+<div id="orders" class="hidden"></div>
 </div>
 
 <!-- ADMIN -->
-<div id="adminApp" class="hidden admin-panel">
-<h2>ADMIN PANEL</h2>
-<div id="adminUsers"></div>
-<hr>
-<h3>THÊM SẢN PHẨM</h3>
-<input id="pname" placeholder="Tên">
-<input id="pdesc" placeholder="Mô tả">
-<input id="pprice" placeholder="Giá">
-<input id="plink" placeholder="Link .mobileconfig">
-<button class="btn" onclick="addProduct()">THÊM</button>
+<div id="adminApp" class="hidden card">
+<h3>ADMIN PANEL</h3>
+
+<h4>QR NẠP TIỀN</h4>
+<input id="qrInput" placeholder="Link ảnh QR">
+<button onclick="saveQR()">LƯU QR</button>
+
+<h4>CỘNG / TRỪ TIỀN USER</h4>
+<select id="userSelect"></select>
+<input id="moneyValue" type="number" placeholder="Nhập số tiền">
+<button onclick="addMoney()">+ TIỀN</button>
+<button onclick="subMoney()">- TIỀN</button>
+
+<h4>DANH SÁCH USER</h4>
+<div id="userList"></div>
 </div>
 
 <script>
-/* ===== DATA ===== */
 const ADMIN={u:"thanhdat08",p:"dat1234"};
 let users=JSON.parse(localStorage.users||"{}");
 let products=JSON.parse(localStorage.products||"[]");
+let qr=localStorage.qr||"";
+let current=null;
 
 if(products.length==0){
- for(let i=1;i<=10;i++)
- products.push({name:"Software "+i,desc:"Mô tả phần mềm "+i,price:50000*i,link:"#"});
+ products=[
+  {name:"VPN MobileConfig",price:50000,link:"#"},
+  {name:"FPS Booster",price:80000,link:"#"}
+ ];
  localStorage.products=JSON.stringify(products);
 }
 
-/* ===== AUTH ===== */
-let current=null;
-function toast(t){
- let d=document.createElement("div");
- d.className="toast";d.innerText=t;
- document.body.appendChild(d);
- setTimeout(()=>d.remove(),3000);
-}
 function login(){
- let u=user.value,p=pass.value;
- if(u==ADMIN.u&&p==ADMIN.p){
- auth.classList.add("hidden");
- adminApp.classList.remove("hidden");
- loadAdmin();
- toast("ADMIN LOGIN OK");
- return;
+ let u=user.value.trim(),p=pass.value.trim();
+ if(!u||!p) return alert("NHẬP ĐẦY ĐỦ TK/MK");
+ if(u==ADMIN.u && p==ADMIN.p){
+  auth.classList.add("hidden");
+  adminApp.classList.remove("hidden");
+  loadAdmin();
+  return;
  }
- if(users[u]&&users[u].pass==p){
+ if(!users[u]||users[u].pass!==p) return alert("SAI TK/MK");
  current=u;
  auth.classList.add("hidden");
  userApp.classList.remove("hidden");
- loadShop();loadWallet();
- toast("LOGIN OK");
- }else toast("SAI TK/MK");
+ loadUser();
 }
+
 function register(){
- let u=user.value,p=pass.value;
- if(users[u])return toast("Tồn tại");
+ let u=user.value.trim(),p=pass.value.trim();
+ if(!u||!p) return alert("NHẬP ĐẦY ĐỦ");
+ if(users[u]) return alert("USER TỒN TẠI");
  users[u]={pass:p,balance:0,orders:[]};
  localStorage.users=JSON.stringify(users);
- toast("ĐĂNG KÝ OK");
+ alert("ĐĂNG KÝ OK");
 }
+
 function logout(){location.reload()}
 
-/* ===== USER ===== */
 function show(id){
- ["shop","wallet","orders"].forEach(x=>document.getElementById(x).classList.add("hidden"));
+ shop.classList.add("hidden");
+ wallet.classList.add("hidden");
+ orders.classList.add("hidden");
  document.getElementById(id).classList.remove("hidden");
 }
+
+function loadUser(){
+ info.innerHTML=`👤 ${current}<br>💰 Số dư: ${users[current].balance} VNĐ`;
+ loadShop();loadWallet();loadOrders();
+}
+
 function loadShop(){
  shop.innerHTML="";
  products.forEach((p,i)=>{
- let d=document.createElement("div");
- d.className="card";
- d.innerHTML=`<h3>${p.name}</h3><p>${p.desc}</p>
- <div class="price">${p.price}₫</div>
- <button class="btn" onclick="buy(${i})">MUA</button>`;
- shop.appendChild(d);
- });
-}
-function buy(i){
- let p=products[i];
- if(users[current].balance<p.price)return toast("KHÔNG ĐỦ TIỀN");
- users[current].balance-=p.price;
- users[current].orders.push(p);
- localStorage.users=JSON.stringify(users);
- loadWallet();loadOrders();
- toast("MUA THÀNH CÔNG");
-}
-function loadWallet(){
- balance.innerText=users[current].balance;
- ck.innerText=current;
- qr.src=localStorage.qr||"";
-}
-function loadOrders(){
- orders.innerHTML="";
- users[current].orders.forEach(o=>{
- orders.innerHTML+=`<div class="card"><h3>${o.name}</h3>
- <a class="btn" href="${o.link}" download>DOWNLOAD</a></div>`;
+  shop.innerHTML+=`
+  <div class="card">
+  <b>${p.name}</b><br>
+  Giá: ${p.price} VNĐ<br>
+  <button onclick="buy(${i})">MUA</button>
+  </div>`;
  });
 }
 
-/* ===== ADMIN ===== */
+function buy(i){
+ let p=products[i];
+ if(users[current].balance<p.price) return alert("KHÔNG ĐỦ TIỀN");
+ users[current].balance-=p.price;
+ users[current].orders.push(p);
+ localStorage.users=JSON.stringify(users);
+ loadUser();
+}
+
+function loadWallet(){
+ wallet.innerHTML=`
+ <h3>NẠP TIỀN</h3>
+ <p>Nội dung chuyển khoản: <b>${current}</b></p>
+ <img src="${qr}" width="200">
+ `;
+}
+
+function loadOrders(){
+ orders.innerHTML="";
+ users[current].orders.forEach(o=>{
+  orders.innerHTML+=`
+  <div class="card">
+  ${o.name}<br>
+  <a href="${o.link}" download>DOWNLOAD</a>
+  </div>`;
+ });
+}
+
 function loadAdmin(){
- adminUsers.innerHTML="";
+ userSelect.innerHTML="";
+ userList.innerHTML="";
  for(let u in users){
- adminUsers.innerHTML+=`
- <div class="card">${u} - ${users[u].balance}₫
- <button class="btn" onclick="money('${u}',100000)">+100k</button>
- <button class="btn" onclick="money('${u}',-100000)">-100k</button>
- </div>`;
+  userSelect.innerHTML+=`<option>${u}</option>`;
+  userList.innerHTML+=`👤 ${u} | 💰 ${users[u].balance}<br>`;
  }
 }
-function money(u,v){
+
+function addMoney(){
+ let u=userSelect.value,v=+moneyValue.value;
+ if(!v) return alert("NHẬP TIỀN");
  users[u].balance+=v;
  localStorage.users=JSON.stringify(users);
- loadAdmin();toast("ĐÃ CẬP NHẬT");
+ loadAdmin();
 }
-function addProduct(){
- products.push({
- name:pname.value,desc:pdesc.value,
- price:+pprice.value,link:plink.value
- });
- localStorage.products=JSON.stringify(products);
- toast("ĐÃ THÊM SẢN PHẨM");
+
+function subMoney(){
+ let u=userSelect.value,v=+moneyValue.value;
+ if(!v) return alert("NHẬP TIỀN");
+ users[u].balance-=v;
+ localStorage.users=JSON.stringify(users);
+ loadAdmin();
+}
+
+function saveQR(){
+ localStorage.qr=qrInput.value;
+ alert("ĐÃ LƯU QR");
 }
 </script>
 </body>
