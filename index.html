@@ -2,22 +2,21 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>TED EXE LOGIN</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TED EXE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root{
 --bg:#020617;
---card:rgba(15,23,42,.88);
+--card:rgba(15,23,42,.9);
 --border:rgba(255,255,255,.08);
 --primary:#6366f1;
 --text:#e5e7eb;
---glow:0 0 30px rgba(99,102,241,.45);
 --success:#22c55e;
 --danger:#ef4444;
+--glow:0 0 30px rgba(99,102,241,.45);
 }
-
 *{box-sizing:border-box}
 body{
 margin:0;
@@ -28,7 +27,6 @@ radial-gradient(circle at 80% 80%,#020617,transparent 40%),
 var(--bg);
 color:var(--text);
 min-height:100vh;
-overflow:hidden;
 }
 
 /* ===== LOGIN ===== */
@@ -39,9 +37,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 padding:16px;
-z-index:10;
 }
-
 .login-card{
 width:100%;
 max-width:380px;
@@ -53,12 +49,10 @@ padding:26px;
 box-shadow:var(--glow);
 animation:pop .45s ease;
 }
-
 @keyframes pop{
 from{opacity:0;transform:translateY(40px) scale(.95)}
 to{opacity:1;transform:none}
 }
-
 .logo{
 text-align:center;
 font-size:26px;
@@ -66,8 +60,6 @@ font-weight:900;
 color:var(--primary);
 margin-bottom:14px;
 }
-
-/* tabs */
 .tabs{display:flex;gap:10px;margin-bottom:18px}
 .tab{
 flex:1;
@@ -85,8 +77,6 @@ background:var(--primary);
 color:#000;
 opacity:1;
 }
-
-/* fields */
 .field{margin-bottom:14px;position:relative}
 .field i{
 position:absolute;
@@ -104,8 +94,6 @@ background:#020617;
 color:#fff;
 font-size:16px;
 }
-
-/* button */
 .btn{
 width:100%;
 padding:14px;
@@ -159,10 +147,7 @@ grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
 gap:14px;
 }
 .price{color:#22c55e;font-weight:800}
-
-@media(max-width:768px){
-.sidebar{display:none}
-}
+@media(max-width:768px){.sidebar{display:none}}
 </style>
 </head>
 
@@ -173,7 +158,6 @@ gap:14px;
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
 <div class="login-card">
-
 <div class="logo">TED EXE</div>
 
 <div class="tabs">
@@ -182,33 +166,20 @@ gap:14px;
 </div>
 
 <div id="loginForm">
-<div class="field">
-<i class="fa fa-user"></i>
-<input id="loginUser" placeholder="Username">
-</div>
-<div class="field">
-<i class="fa fa-lock"></i>
-<input id="loginPass" type="password" placeholder="Password">
-</div>
+<div class="field"><i class="fa fa-user"></i><input id="loginUser" placeholder="Username"></div>
+<div class="field"><i class="fa fa-lock"></i><input id="loginPass" type="password" placeholder="Password"></div>
 <button class="btn" id="btnLogin">ĐĂNG NHẬP</button>
 </div>
 
 <div id="registerForm" style="display:none">
-<div class="field">
-<i class="fa fa-user-plus"></i>
-<input id="regUser" placeholder="Username">
-</div>
-<div class="field">
-<i class="fa fa-lock"></i>
-<input id="regPass" type="password" placeholder="Password">
-</div>
+<div class="field"><i class="fa fa-user-plus"></i><input id="regUser" placeholder="Username"></div>
+<div class="field"><i class="fa fa-lock"></i><input id="regPass" type="password" placeholder="Password"></div>
 <button class="btn" id="btnRegister">TẠO TÀI KHOẢN</button>
 </div>
 
 <p style="text-align:center;opacity:.6;margin-top:12px">
 Admin: tạo username <b>admin</b>
 </p>
-
 </div>
 </div>
 
@@ -217,30 +188,29 @@ Admin: tạo username <b>admin</b>
 <div class="wrapper">
 <div class="sidebar">
 <b>MENU</b><br><br>
-<a onclick="view('shop')">🛒 Shop</a><br>
 <a onclick="logout()">🚪 Thoát</a>
 </div>
-
 <div class="main">
 <div id="info"></div>
-<div id="shop">
 <div class="grid" id="products"></div>
-</div>
 </div>
 </div>
 </div>
 
 <script>
-/* ===== UTILS ===== */
+document.addEventListener("DOMContentLoaded",()=>{
+
 const $=id=>document.getElementById(id)
+const toastEl=$("toast")
+
 function toast(msg,type="success"){
-toastEl.innerText=msg
+toastEl.textContent=msg
 toastEl.className="toast "+type
 toastEl.style.display="block"
 setTimeout(()=>toastEl.style.display="none",2000)
 }
 
-/* ===== DB ===== */
+/* DB */
 const db={
 users:JSON.parse(localStorage.users||"[]"),
 products:[
@@ -253,63 +223,62 @@ save(){localStorage.users=JSON.stringify(this.users)}
 
 let me=null
 
-/* ===== TAB ===== */
-tabLogin.onclick=()=>{
-tabLogin.classList.add("active")
-tabRegister.classList.remove("active")
-loginForm.style.display="block"
-registerForm.style.display="none"
+/* tabs */
+$("tabLogin").onclick=()=>{
+$("tabLogin").classList.add("active")
+$("tabRegister").classList.remove("active")
+$("loginForm").style.display="block"
+$("registerForm").style.display="none"
+}
+$("tabRegister").onclick=()=>{
+$("tabRegister").classList.add("active")
+$("tabLogin").classList.remove("active")
+$("loginForm").style.display="none"
+$("registerForm").style.display="block"
 }
 
-tabRegister.onclick=()=>{
-tabRegister.classList.add("active")
-tabLogin.classList.remove("active")
-loginForm.style.display="none"
-registerForm.style.display="block"
-}
-
-/* ===== REGISTER ===== */
-btnRegister.onclick=()=>{
-const u=regUser.value.trim()
-const p=regPass.value.trim()
+/* register */
+$("btnRegister").onclick=()=>{
+const u=$("regUser").value.trim()
+const p=$("regPass").value.trim()
 if(!u||!p) return toast("Thiếu thông tin","error")
 if(db.users.find(x=>x.u===u)) return toast("Tài khoản đã tồn tại","error")
-
 db.users.push({u,p,m:0,role:u==="admin"?"admin":"user"})
 db.save()
 toast("🎉 Tạo tài khoản thành công")
-regUser.value=regPass.value=""
-tabLogin.onclick()
+$("regUser").value=$("regPass").value=""
+$("tabLogin").onclick()
 }
 
-/* ===== LOGIN ===== */
-btnLogin.onclick=()=>{
-const u=loginUser.value.trim()
-const p=loginPass.value.trim()
+/* login */
+$("btnLogin").onclick=()=>{
+const u=$("loginUser").value.trim()
+const p=$("loginPass").value.trim()
 const acc=db.users.find(x=>x.u===u && x.p===p)
 if(!acc) return toast("Sai tài khoản hoặc mật khẩu","error")
-
 me=acc
 toast("✅ Đăng nhập thành công")
 setTimeout(()=>{
-loginScreen.style.display="none"
-app.style.display="block"
+$("loginScreen").style.display="none"
+$("app").style.display="block"
 render()
 },500)
 }
 
-/* ===== APP ===== */
+/* app */
 function render(){
-info.innerHTML=`👤 ${me.u} | 💰 ${me.m.toLocaleString()}đ`
-products.innerHTML=db.products.map(p=>`
+$("info").innerHTML=`👤 ${me.u} | 💰 ${me.m.toLocaleString()}đ`
+$("products").innerHTML=db.products.map(p=>`
 <div class="card">
 <b>${p.name}</b>
 <div class="price">${p.price.toLocaleString()}đ</div>
 </div>`).join("")
 }
 
-function view(v){}
-function logout(){location.reload()}
+window.logout=()=>location.reload()
+
+})
 </script>
+
 </body>
 </html>
