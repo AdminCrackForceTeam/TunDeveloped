@@ -2,101 +2,70 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Tun Clone UI</title>
+<title>TED EXE FULL FIX</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
 :root{
---bg:#0b1020;
---sidebar:#070b18;
---card:#0f172a;
---border:#1e293b;
---primary:#6366f1;
---text:#e5e7eb;
+--bg:#0b1020;--sidebar:#070b18;--card:#0f172a;
+--border:#1e293b;--primary:#6366f1;--text:#e5e7eb
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Segoe UI;background:var(--bg);color:var(--text)}
 .wrapper{display:flex;height:100vh}
 
-/* SIDEBAR */
-.sidebar{
-width:240px;background:var(--sidebar);
-border-right:1px solid var(--border);
-padding:20px
-}
-.logo{
-text-align:center;font-size:22px;
-font-weight:900;color:var(--primary);
-cursor:pointer
-}
-.nav a{
-display:block;padding:12px;
-border-radius:8px;color:#cbd5f5;
-text-decoration:none;margin:6px 0
-}
+/* sidebar */
+.sidebar{width:240px;background:var(--sidebar);border-right:1px solid var(--border);padding:20px}
+.logo{text-align:center;font-size:22px;font-weight:900;color:var(--primary)}
+.nav a{display:block;padding:12px;border-radius:10px;color:#cbd5f5;text-decoration:none;margin:6px 0}
 .nav a:hover{background:var(--primary);color:#000}
 
-/* MAIN */
+/* main */
 .main{flex:1;padding:20px;overflow:auto}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:14px;
-padding:15px
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-gap:15px
-}
-.btn{
-padding:10px 14px;
-border-radius:10px;
-border:none;
-font-weight:bold;
-cursor:pointer
-}
-.btn-primary{background:var(--primary)}
-.btn-danger{background:#ef4444}
-input,textarea{
-width:100%;padding:10px;
-border-radius:10px;
-background:#020617;
-border:1px solid var(--border);
-color:#fff;margin:6px 0
-}
+h2{margin-top:0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.btn{padding:10px 14px;border-radius:12px;border:none;font-weight:700;cursor:pointer}
+.btn-primary{background:var(--primary);color:#000}
+.btn-danger{background:#ef4444;color:#fff}
+.price{color:#22c55e;font-weight:800}
 .hidden{display:none}
-.price{color:#22c55e;font-weight:bold}
+input,textarea{
+width:100%;padding:10px;border-radius:10px;
+background:#020617;border:1px solid var(--border);
+color:#fff;margin-top:6px
+}
+small{opacity:.7}
 </style>
 </head>
-<body>
 
+<body>
 <div class="wrapper">
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo" onclick="secretTap()">TED EXE</div>
+<div class="logo">TED EXE</div>
 <div class="nav">
-<a onclick="show('shop')"><i class="fa fa-store"></i> Shop</a>
-<a onclick="show('deposit')"><i class="fa fa-qrcode"></i> Nạp tiền</a>
+<a onclick="view('shop')"><i class="fa fa-store"></i> Shop</a>
+<a onclick="view('deposit')"><i class="fa fa-qrcode"></i> Nạp tiền</a>
+<a onclick="view('admin')"><i class="fa fa-user-shield"></i> Admin</a>
 <a onclick="logout()"><i class="fa fa-sign-out"></i> Thoát</a>
 </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
-
-<div class="header">
-<h2 id="title">SHOP</h2>
+<h2 id="title">LOGIN</h2>
 <div id="info"></div>
-</div>
 
 <!-- LOGIN -->
-<div class="card" id="loginBox">
+<div id="login" class="card">
 <h3>Đăng nhập / Đăng ký</h3>
-<input id="u" placeholder="Username">
-<input id="p" type="password" placeholder="Password">
-<button class="btn btn-primary" onclick="login()">Vào Shop</button>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn btn-primary" onclick="login()">Vào hệ thống</button>
+<small>Admin: đăng nhập bằng username <b>admin</b></small>
 </div>
 
 <!-- SHOP -->
@@ -105,22 +74,19 @@ color:#fff;margin:6px 0
 </div>
 
 <!-- DEPOSIT -->
-<div id="deposit" class="hidden">
-<div class="card">
+<div id="deposit" class="hidden card">
 <h3>Nạp tiền</h3>
-<img id="qr" style="max-width:200px"><br><br>
 Nội dung CK: <b id="ck"></b>
-<input id="amount" placeholder="Số tiền">
-<button class="btn btn-primary" onclick="sendDeposit()">Gửi yêu cầu</button>
-</div>
+<input id="money" placeholder="Số tiền">
+<button class="btn btn-primary" onclick="deposit()">Gửi yêu cầu</button>
+<div id="depositList"></div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="hidden">
-
 <div class="card">
 <h3>Thêm sản phẩm</h3>
-<input id="pn" placeholder="Tên">
+<input id="pn" placeholder="Tên sản phẩm">
 <textarea id="pd" placeholder="Mô tả"></textarea>
 <input id="pp" placeholder="Giá">
 <button class="btn btn-primary" onclick="addProduct()">Thêm</button>
@@ -135,124 +101,147 @@ Nội dung CK: <b id="ck"></b>
 <h3>Duyệt nạp</h3>
 <div id="deposits"></div>
 </div>
-
-<div class="card">
-<h3>QR Nạp</h3>
-<input type="file" onchange="uploadQR(this)">
-<img id="qrAdmin" style="max-width:200px">
-</div>
-
 </div>
 
 </div>
 </div>
 
 <script>
-/* ==== DATA ==== */
-let users=JSON.parse(localStorage.users||"[]");
-let products=JSON.parse(localStorage.products||JSON.stringify([
-{name:"Nick Free Fire VIP",desc:"Rank Cao – Full Skin",price:150000},
-{name:"Nick Liên Quân",desc:"Tướng + Skin Hiếm",price:200000},
-{name:"Acc Valorant",desc:"Full Rank – Đổi Mail",price:350000},
-{name:"Nick PUBG",desc:"Trang phục xịn",price:180000},
-{name:"Nick CF",desc:"VIP Vĩnh Viễn",price:120000},
-{name:"Acc Genshin",desc:"5 Sao + Vũ Khí",price:500000},
-{name:"Nick Roblox",desc:"Robux lớn",price:90000},
-{name:"Nick LMHT",desc:"Rank Cao",price:250000},
-{name:"Acc Steam",desc:"Nhiều Game",price:400000},
-{name:"Nick Free Fire Random",desc:"Giá rẻ",price:50000}
-]));
-let deposits=JSON.parse(localStorage.deposits||"[]");
-let qr=localStorage.qr||"";
-let me=null;
-let tap=0;
+/* ================= CORE ================= */
+const $=id=>document.getElementById(id)
 
-/* ==== UTILS ==== */
-function save(){
-localStorage.users=JSON.stringify(users);
-localStorage.products=JSON.stringify(products);
-localStorage.deposits=JSON.stringify(deposits);
-localStorage.qr=qr;
+const db={
+users:JSON.parse(localStorage.users||"[]"),
+products:JSON.parse(localStorage.products||JSON.stringify([
+{name:"Nick Free Fire VIP",desc:"Rank cao – Full skin",price:150000},
+{name:"Nick Liên Quân",desc:"Tướng + skin hiếm",price:200000},
+{name:"Acc Genshin",desc:"5★ + vũ khí",price:500000}
+])),
+deposits:JSON.parse(localStorage.deposits||"[]"),
+save(){
+localStorage.users=JSON.stringify(this.users)
+localStorage.products=JSON.stringify(this.products)
+localStorage.deposits=JSON.stringify(this.deposits)
+}
 }
 
-/* ==== LOGIN ==== */
+let me=null
+
+/* ================= LOGIN ================= */
 function login(){
-let user=users.find(x=>x.u==u.value&&x.p==p.value);
-if(!user){
-user={u:u.value,p:p.value,m:0};
-users.push(user);
-}
-me=user;
-loginBox.classList.add("hidden");
-info.innerHTML=`${me.u} | ${me.m}đ`;
-ck.innerText=me.u;
-if(qr) document.getElementById("qr").src=qr;
-show("shop");render();
+const username=user.value.trim()
+const password=pass.value
+
+if(!username||!password) return alert("Thiếu thông tin")
+
+let u=db.users.find(x=>x.u===username)
+
+/* đăng ký */
+if(!u){
+u={u:username,p:password,m:0,role:username==="admin"?"admin":"user"}
+db.users.push(u)
+db.save()
 }
 
-/* ==== SHOP ==== */
+/* đăng nhập */
+if(u.p!==password) return alert("Sai mật khẩu")
+
+me=u
+localStorage.session=username
+$("login").classList.add("hidden")
+$("ck").innerText=me.u
+view("shop")
+render()
+}
+
+/* auto login */
+const s=localStorage.session
+if(s){
+const u=db.users.find(x=>x.u===s)
+if(u){me=u;$("login").classList.add("hidden");view("shop");render()}
+}
+
+/* ================= VIEW ================= */
+function view(v){
+["shop","deposit","admin"].forEach(x=>$(x).classList.add("hidden"))
+if(v==="admin" && me.role!=="admin") return alert("Không có quyền admin")
+$(v).classList.remove("hidden")
+$("title").innerText=v.toUpperCase()
+render()
+}
+
+/* ================= RENDER ================= */
 function render(){
-productsDiv=products.map(p=>`
+if(!me) return
+
+$("info").innerHTML=`👤 ${me.u} | 💰 ${me.m.toLocaleString()}đ`
+
+$("products").innerHTML=db.products.map((p,i)=>`
 <div class="card">
 <h4>${p.name}</h4>
 <p>${p.desc}</p>
-<div class="price">${p.price} đ</div><br>
-<button class="btn btn-primary" onclick="buy(${p.price})">Mua</button>
-</div>`).join("");
-products.innerHTML=productsDiv;
+<div class="price">${p.price.toLocaleString()}đ</div>
+<button class="btn btn-primary" onclick="buy(${i})">Mua</button>
+</div>`).join("")
 
-/* admin */
-usersDiv=users.map(u=>`
-<div>${u.u} - ${u.m}đ
-<button onclick="u.m+=100000;save();render()">+100k</button>
-</div>`).join("");
-document.getElementById("users").innerHTML=usersDiv;
+$("depositList").innerHTML=db.deposits
+.filter(d=>d.u===me.u)
+.map(d=>`<div>${d.a.toLocaleString()}đ (chờ duyệt)</div>`).join("")
 
-depositsDiv=deposits.map((d,i)=>`
-<div>${d.u} - ${d.a}
-<button onclick="let u=users.find(x=>x.u==d.u);u.m+=+d.a;deposits.splice(${i},1);save();render()">Duyệt</button>
-</div>`).join("");
-document.getElementById("deposits").innerHTML=depositsDiv;
+$("users").innerHTML=db.users.map((u,i)=>`
+<div>${u.u} – ${u.m.toLocaleString()}đ
+<button onclick="addMoney(${i})">+100k</button>
+</div>`).join("")
+
+$("deposits").innerHTML=db.deposits.map((d,i)=>`
+<div>${d.u} – ${d.a.toLocaleString()}đ
+<button onclick="approve(${i})">Duyệt</button>
+</div>`).join("")
 }
 
-/* ==== ACTION ==== */
-function buy(p){
-if(me.m<p) return alert("Không đủ tiền");
-me.m-=p;save();render();
+/* ================= ACTION ================= */
+function buy(i){
+const p=db.products[i]
+if(me.m<p.price) return alert("Không đủ tiền")
+me.m-=p.price
+db.save();render()
+alert("Mua thành công")
 }
-function sendDeposit(){
-deposits.push({u:me.u,a:amount.value});
-save();alert("Đã gửi");
+
+function deposit(){
+const a=+money.value
+if(a<=0||isNaN(a)) return alert("Số tiền không hợp lệ")
+db.deposits.push({u:me.u,a})
+db.save()
+money.value=""
+render()
+alert("Đã gửi yêu cầu nạp")
 }
+
+function approve(i){
+const d=db.deposits[i]
+const u=db.users.find(x=>x.u===d.u)
+u.m+=d.a
+db.deposits.splice(i,1)
+db.save();render()
+}
+
+function addMoney(i){
+db.users[i].m+=100000
+db.save();render()
+}
+
 function addProduct(){
-products.push({name:pn.value,desc:pd.value,price:+pp.value});
-save();render();
+if(!pn.value||!pp.value) return alert("Thiếu dữ liệu")
+db.products.push({name:pn.value,desc:pd.value,price:+pp.value})
+db.save();render()
+pn.value=pd.value=pp.value=""
 }
-function uploadQR(i){
-let r=new FileReader();
-r.onload=e=>{qr=e.target.result;qrAdmin.src=qr;save();}
-r.readAsDataURL(i.files[0]);
-}
-function show(id){
-["shop","deposit","admin"].forEach(x=>document.getElementById(x).classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
-title.innerText=id.toUpperCase();
-}
-function logout(){location.reload()}
 
-/* ==== ADMIN SECRET ==== */
-function secretTap(){
-tap++;
-if(tap==5){
-let k=prompt("KEY ?");
-if(btoa(k)=="dGVkZXhlQGFkbWlu"){
-document.getElementById("admin").classList.remove("hidden");
-show("admin");
-}
-tap=0;
-}
+function logout(){
+localStorage.removeItem("session")
+location.reload()
 }
 </script>
-
 </body>
 </html>
