@@ -369,8 +369,8 @@
 <div class="modal hidden" id="regModal">
   <div class="box" style="max-width:520px">
     <h3>Tạo Tài Khoản Mới</h3>
-    <input id="ru" placeholder="Tên đăng nhập (≥4 ký tự)">
-    <input id="rp" type="password" placeholder="Mật khẩu (≥6 ký tự)">
+    <input id="ru" placeholder="Tên đăng nhập">
+    <input id="rp" type="password" placeholder="Mật khẩu">
     <button class="action-btn" onclick="register()">Tạo Tài Khoản</button>
   </div>
 </div>
@@ -727,8 +727,8 @@ function addNewUser() {
   const pass = document.getElementById("newUserPass").value;
   const bal = Number(document.getElementById("newUserBalance").value) || 0;
 
-  if (name.length < 4) return alert("Tên ≥ 4 ký tự");
-  if (pass.length < 6) return alert("Mật khẩu ≥ 6 ký tự");
+  if (name.length < 4) return alert("Tên tài khoản");
+  if (pass.length < 6) return alert("Nhập mật khẩu");
   if (users.some(u => u.u === name)) return alert("Tên đã tồn tại!");
 
   showLoading();
