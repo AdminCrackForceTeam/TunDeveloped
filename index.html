@@ -166,7 +166,7 @@
   }
 
   .buy {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
     color: white;
     font-weight: 700;
     font-size: 1.1rem;
@@ -175,27 +175,28 @@
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.55);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
   }
 
   .buy:hover {
-    transform: scale(1.08);
-    box-shadow: 0 18px 40px rgba(239, 68, 68, 0.75);
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6);
   }
 
   .box {
     background: rgba(20, 0, 0, 0.78);
     border-radius: 20px;
-    padding: 32px;
-    margin-bottom: 35px;
+    padding: 35px;
+    margin-bottom: 40px;
     border: 1px solid rgba(239, 68, 68, 0.25);
     backdrop-filter: blur(10px);
   }
 
   .box h3, .box h4 {
     color: #f87171;
-    margin-bottom: 24px;
-    font-size: 1.4rem;
+    margin-bottom: 28px;
+    font-size: 1.5rem;
   }
 
   input, textarea, select {
@@ -205,7 +206,7 @@
     border: 1px solid rgba(239, 68, 68, 0.35);
     background: rgba(40, 0, 0, 0.65);
     color: white;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     font-size: 1.05rem;
   }
 
@@ -261,18 +262,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 20px;
+    padding: 20px 24px;
     background: rgba(40, 0, 0, 0.55);
     border-radius: 14px;
-    margin: 12px 0;
+    margin: 14px 0;
     border: 1px solid rgba(239, 68, 68, 0.2);
     flex-wrap: wrap;
-    gap: 16px;
-    font-size: 1.05rem;
+    gap: 20px;
+    font-size: 1.1rem;
   }
 
   .search-input {
-    margin-bottom: 24px;
+    margin-bottom: 28px;
     font-size: 1.1rem;
     padding: 18px 20px;
   }
@@ -292,28 +293,28 @@
 
   .modal .box {
     width: 95%;
-    max-width: 1000px;
+    max-width: 1200px; /* Tăng độ rộng cho admin panel */
     background: rgba(20, 0, 0, 0.96);
     border-radius: 24px;
-    padding: 45px 40px;
+    padding: 50px 60px; /* Padding rộng rãi hơn */
     border: 1px solid rgba(239, 68, 68, 0.4);
     box-shadow: 0 35px 80px rgba(0,0,0,0.75);
-    max-height: 92vh;
+    max-height: 90vh;
     overflow-y: auto;
   }
 
   .modal h3 {
     color: #f87171;
     text-align: center;
-    margin-bottom: 32px;
-    font-size: 1.9rem;
+    margin-bottom: 40px;
+    font-size: 2.1rem;
   }
 
   .qr-preview {
-    max-width: 320px;
+    max-width: 360px;
     border-radius: 16px;
     border: 3px solid #ef4444;
-    margin: 20px auto;
+    margin: 24px auto;
     display: block;
   }
 
@@ -321,6 +322,7 @@
     .wrap { flex-direction: column; }
     .sidebar { width: 100%; }
     .logo { font-size: 2rem; }
+    .modal .box { padding: 30px 20px; }
   }
 </style>
 </head>
@@ -366,7 +368,7 @@
   </div>
 </div>
 
-<!-- Modal Admin (giữ nguyên như cũ) -->
+<!-- Modal Admin -->
 <div class="modal hidden" id="adminModal">
   <div class="box">
     <h3>Admin Panel</h3>
@@ -419,7 +421,7 @@
       <button class="action-btn" onclick="saveQR()">Lưu QR & Ghi chú</button>
     </div>
 
-    <button class="action-btn" style="background:#4b5563;margin-top:30px;width:100%;font-size:1.2rem;" onclick="closeAdmin()">Đóng</button>
+    <button class="action-btn" style="background:#4b5563;margin-top:40px;width:100%;font-size:1.3rem;" onclick="closeAdmin()">Đóng</button>
   </div>
 </div>
 
@@ -543,7 +545,7 @@ function render() {
 }
 
 function showDetails(details) {
-  alert(`Chi tiết tài khoản / mật khẩu:\n\n${details}`);
+  alert(`Chi tiết tài khoản / mật khẩu:\n\ndetails}`);
 }
 
 // ================== AUTH FUNCTIONS ==================
@@ -559,7 +561,7 @@ function login() {
   if (!user) return alert("Sai tên đăng nhập hoặc mật khẩu!");
 
   currentUser = {...user};
-  storage.setItem("currentUser", JSON.stringify(currentUser));
+  storage.setItem("currentUser",.stringify(currentUser));
   document.getElementById("loginModal").classList.add("hidden");
   render();
   alert("Đăng nhập thành công!");
@@ -575,7 +577,7 @@ function register() {
 
   const newUser = { u, p: hash(p), balance: 0, orders: [] };
   users.push(newUser);
-  currentUser = {...newUser};
+ currentUser = {...newUser};
   saveAll();
 
   document.getElementById("regModal").classList.add("hidden");
@@ -652,11 +654,11 @@ function renderUserList() {
     html += `
       <div class="user-list-item">
         <div>
-          <strong style="color:#fecaca;font-size:1.25rem;">${user.u}</strong><br>
+          <strong style="color:#fecaca;font-size:1.3rem;">${user.u}</strong><br>
           <span style="color:#fda4af;">Số dư: ${Number(user.balance || 0).toLocaleString('vi-VN')}đ</span>
         </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <input type="number" id="amt_${idx}" placeholder="Số tiền" style="width:140px;">
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <input type="number" id="amt_${idx}" placeholder="Số tiền" style="width:150px;">
           <button class="action-btn" onclick="changeBalance(${idx}, true)">+ Tiền</button>
           <button class="action-btn" style="background:#991b1b;" onclick="changeBalance(${idx}, false)">- Tiền</button>
           <button class="delete-btn" onclick="deleteUser(${idx})">Xóa</button>
@@ -740,7 +742,7 @@ function renderPendingOrders() {
         html += `
           <div class="order-item">
             <div>
-              <strong style="color:#fecaca;font-size:1.25rem;">${user.u}</strong><br>
+              <strong style="color:#fecaca;font-size:1.3rem;">${user.u}</strong><br>
               <span style="color:#fda4af;">Sản phẩm: ${order.productName}</span><br>
               <span style="color:#fbbf24;">${order.date}</span>
             </div>
@@ -786,7 +788,7 @@ function renderProductList() {
     html += `
       <div class="product-item">
         <div>
-          <strong style="color:#fecaca;">${p.name}</strong><br>
+          <strong style="color:#fecaca;font-size:1.3rem;">${p.name}</strong><br>
           <span style="color:#fda4af;">${p.desc || ''} - ${Number(p.price).toLocaleString('vi-VN')}đ</span>
         </div>
         <button class="delete-btn" onclick="deleteProduct(${i})">Xóa</button>
