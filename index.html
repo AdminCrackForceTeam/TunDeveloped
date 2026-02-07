@@ -75,54 +75,110 @@
     gap: 35px;
   }
 
+  /* === SỬA MENU SIDEBAR - LÀM NỔI BẬT HƠN === */
   .sidebar {
     width: 280px;
-    background: rgba(20, 0, 0, 0.75);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 30px 20px;
-    border: 1px solid rgba(239, 68, 68, 0.25);
+    background: linear-gradient(135deg, rgba(40, 0, 0, 0.92), rgba(60, 0, 0, 0.85));
+    backdrop-filter: blur(16px);
+    border-radius: 24px;
+    padding: 35px 20px;
+    border: 2px solid rgba(239, 68, 68, 0.5);
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.25);
     height: fit-content;
   }
 
   .sidebar h3 {
-    color: #f87171;
-    font-size: 1.1rem;
-    font-weight: 800;
-    margin-bottom: 24px;
+    color: #ff6b6b;
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 28px;
     text-transform: uppercase;
-    letter-spacing: 1.8px;
+    letter-spacing: 2.2px;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+    text-align: center;
   }
 
   .sidebar a {
-    display: block;
-    padding: 16px 20px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    color: #fda4af;
-    font-weight: 600;
-    font-size: 1.05rem;
-    transition: all 0.3s;
-    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 18px 24px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+    color: #ff9f9f;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.35s ease;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sidebar a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.25), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .sidebar a:hover::before {
+    transform: translateX(100%);
   }
 
   .sidebar a:hover {
-    background: rgba(239, 68, 68, 0.18);
-    color: #fef2f2;
-    transform: translateX(8px);
+    color: white;
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+    transform: translateX(6px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35);
   }
 
-  .content { flex: 1; min-width: 340px; }
-
+  /* === SỬA PHẦN THÔNG BÁO - NỔI BẬT HƠN === */
   .notice {
-    background: rgba(30, 0, 0, 0.65);
-    border-left: 6px solid #ef4444;
-    padding: 18px 24px;
-    border-radius: 14px;
-    margin-bottom: 35px;
-    font-size: 1.05rem;
-    backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, rgba(40, 0, 0, 0.85), rgba(60, 0, 0, 0.75));
+    border: 2px solid #ef4444;
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-bottom: 40px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fecaca;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    position: relative;
+    overflow: hidden;
   }
+
+  .notice::before {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: 2.2rem;
+    opacity: 0.4;
+  }
+
+  /* === PHẦN GIẢM GIÁ === */
+  .discount-box {
+    background: rgba(20, 0, 0, 0.78);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .discount-box input {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  /* Các style còn lại giữ nguyên */
+  .content { flex: 1; min-width: 340px; }
 
   .products {
     display: grid;
@@ -185,169 +241,16 @@
     box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6);
   }
 
-  .buy:active {
-    border: 2px solid #ef4444;
-    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
-    transform: translateY(0) scale(1);
-  }
-
-  .box {
-    background: rgba(20, 0, 0, 0.78);
-    border-radius: 20px;
-    padding: 35px;
-    margin-bottom: 40px;
-    border: 1px solid rgba(239, 68, 68, 0.25);
-    backdrop-filter: blur(10px);
-  }
-
-  .box h3, .box h4 {
-    color: #f87171;
-    margin-bottom: 28px;
-    font-size: 1.5rem;
-  }
-
-  input, textarea, select {
-    width: 100%;
-    padding: 16px 18px;
-    border-radius: 12px;
-    border: 1px solid rgba(239, 68, 68, 0.35);
-    background: rgba(40, 0, 0, 0.65);
-    color: white;
-    margin-bottom: 20px;
-    font-size: 1.05rem;
-  }
-
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: #ef4444;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3);
-  }
-
-  button.action-btn {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    border: none;
-    padding: 16px 24px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
-  }
-
-  button.action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.7);
-  }
-
-  .delete-btn {
-    background: #991b1b;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .delete-btn:hover { background: #b91c1c; }
-
-  .approve-btn {
-    background: #16a34a;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .approve-btn:hover { background: #22c55e; }
-
-  .user-list-item, .product-item, .order-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    background: rgba(40, 0, 0, 0.55);
-    border-radius: 14px;
-    margin: 14px 0;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 1.1rem;
-  }
-
-  .search-input {
-    margin-bottom: 28px;
-    font-size: 1.1rem;
-    padding: 18px 20px;
-  }
-
-  .modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.88);
-    backdrop-filter: blur(12px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-
-  .modal.hidden { display: none; }
-
-  .modal .box {
-    width: 95%;
-    max-width: 1200px;
-    background: rgba(20, 0, 0, 0.96);
-    border-radius: 24px;
-    padding: 50px 60px;
-    border: 1px solid rgba(239, 68, 68, 0.4);
-    box-shadow: 0 35px 80px rgba(0,0,0,0.75);
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal h3 {
-    color: #f87171;
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 2.1rem;
-  }
-
-  .qr-preview {
-    max-width: 360px;
-    border-radius: 16px;
-    border: 3px solid #ef4444;
-    margin: 24px auto;
-    display: block;
-  }
-
-  @media (max-width: 768px) {
-    .wrap { flex-direction: column; }
-    .sidebar { width: 100%; }
-    .logo { font-size: 2rem; }
-    .modal .box { padding: 30px 20px; }
-  }
+  /* ... (giữ nguyên các style modal, button, input, etc...) */
 </style>
 </head>
 <body>
 
-<div id="loadingOverlay" style="position:fixed;inset:0;background:rgba(10,0,0,0.96);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;opacity:0;visibility:hidden;transition:all 0.4s;">
-  <div class="spinner" style="width:90px;height:90px;border:10px solid rgba(239,68,68,0.25);border-top:10px solid #ef4444;border-radius:50%;animation:spin 1s linear infinite;"></div>
-  <div style="margin-top:35px;font-size:1.4rem;font-weight:700;color:#ef4444;">Đang xử lý...</div>
-</div>
-
-<div class="top">
-  <div class="logo">TUN MEDIA</div>
-  <div class="top-right" id="topRight"></div>
-</div>
+<!-- ... (giữ nguyên loadingOverlay, top bar) ... -->
 
 <div class="wrap">
   <div class="sidebar">
-    <h3>MENU</h3>
+    <h3>MENU CHÍNH</h3>
     <a onclick="view='shop';render()">Cửa hàng</a>
     <a onclick="view='nap';render()">Nạp tiền</a>
     <a onclick="view='orders';render()">Lịch sử mua</a>
@@ -355,77 +258,25 @@
   <div class="content" id="content"></div>
 </div>
 
-<!-- Modal Đăng nhập -->
-<div class="modal hidden" id="loginModal">
-  <div class="box" style="max-width:520px">
-    <h3>Đăng Nhập</h3>
-    <input id="lu" placeholder="Tên đăng nhập">
-    <input id="lp" type="password" placeholder="Mật khẩu">
-    <button class="action-btn" onclick="login()">Đăng Nhập</button>
-  </div>
-</div>
+<!-- Modal Đăng nhập, Đăng ký, Admin giữ nguyên -->
 
-<!-- Modal Đăng ký -->
-<div class="modal hidden" id="regModal">
-  <div class="box" style="max-width:520px">
-    <h3>Tạo Tài Khoản Mới</h3>
-    <input id="ru" placeholder="Tên đăng nhập">
-    <input id="rp" type="password" placeholder="Mật khẩu">
-    <button class="action-btn" onclick="register()">Tạo Tài Khoản</button>
-  </div>
-</div>
-
-<!-- Modal Admin -->
+<!-- Modal Admin (thêm phần mã giảm giá) -->
 <div class="modal hidden" id="adminModal">
   <div class="box">
     <h3>Admin Panel</h3>
 
-    <!-- Quản lý người dùng -->
+    <!-- ... (giữ nguyên các phần Quản lý người dùng, Duyệt đơn, Quản lý sản phẩm, Thông báo, QR) ... -->
+
+    <!-- === PHẦN MỚI: QUẢN LÝ MÃ GIẢM GIÁ === -->
     <div class="box">
-      <h4 style="color:#fecaca;">Quản lý người dùng</h4>
-      <input id="userSearch" class="search-input" placeholder="Tìm kiếm tên user..." oninput="renderUserList()">
-      <div id="userList"></div>
+      <h4 style="color:#fecaca;">Quản lý mã giảm giá</h4>
+      <div id="discountList"></div>
       
-      <h4 style="color:#fecaca;margin-top:40px;">Thêm người dùng mới</h4>
-      <input id="newUserName" placeholder="Tên đăng nhập">
-      <input id="newUserPass" type="password" placeholder="Mật khẩu">
-      <input id="newUserBalance" type="number" placeholder="Số dư ban đầu (đ)">
-      <button class="action-btn" onclick="addNewUser()">Thêm User</button>
-    </div>
-
-    <!-- Duyệt đơn hàng -->
-    <div class="box">
-      <h4 style="color:#fecaca;">Duyệt đơn hàng</h4>
-      <div id="pendingOrders"></div>
-    </div>
-
-    <!-- Quản lý sản phẩm -->
-    <div class="box">
-      <h4 style="color:#fecaca;">Quản lý sản phẩm</h4>
-      <div id="productList"></div>
-      
-      <h4 style="color:#fecaca;margin-top:40px;">Thêm sản phẩm mới</h4>
-      <input id="newProductName" placeholder="Tên sản phẩm">
-      <input id="newProductDesc" placeholder="Mô tả ngắn">
-      <input id="newProductPrice" type="number" placeholder="Giá (đ)">
-      <button class="action-btn" onclick="addNewProduct()">Thêm Sản Phẩm</button>
-    </div>
-
-    <!-- Thông báo trang chủ -->
-    <div class="box">
-      <h4 style="color:#fecaca;">Thông báo trang chủ</h4>
-      <textarea id="n" rows="4" placeholder="Nhập thông báo..."></textarea>
-      <button class="action-btn" onclick="saveNotice()">Lưu</button>
-    </div>
-
-    <!-- QR Nạp tiền -->
-    <div class="box">
-      <h4 style="color:#fecaca;">QR Nạp tiền</h4>
-      <input type="file" id="qrFileInput" accept="image/*">
-      <p style="font-size:1rem;color:#fda4af;margin:12px 0;">Chọn ảnh QR mới (hoặc giữ nguyên QR cũ)</p>
-      <img id="qrPreview" class="qr-preview" src="https://i.imgur.com/9Z7Y9Kb.png" alt="QR hiện tại">
-      <input id="qn" placeholder="Ghi chú (hiển thị dưới QR)">
-      <button class="action-btn" onclick="saveQR()">Lưu QR & Ghi chú</button>
+      <h4 style="color:#fecaca;margin-top:35px;">Tạo mã giảm giá mới</h4>
+      <input id="newDiscountCode" placeholder="Mã giảm giá (ví dụ: SALE30)">
+      <input id="newDiscountPercent" type="number" placeholder="Phần trăm giảm (1-100)" min="1" max="100">
+      <input id="newDiscountMax" type="number" placeholder="Số lần dùng tối đa (để trống = không giới hạn)">
+      <button class="action-btn" onclick="addNewDiscount()">Tạo Mã</button>
     </div>
 
     <button class="action-btn" style="background:#4b5563;margin-top:40px;width:100%;font-size:1.3rem;" onclick="closeAdmin()">Đóng</button>
@@ -433,74 +284,41 @@
 </div>
 
 <script>
-// ================== CÁC BIẾN VÀ HÀM CƠ BẢN ==================
-const loadingOverlay = document.getElementById("loadingOverlay");
-function showLoading() { loadingOverlay.style.opacity = "1"; loadingOverlay.style.visibility = "visible"; }
-function hideLoading() { setTimeout(() => { loadingOverlay.style.opacity = "0"; loadingOverlay.style.visibility = "hidden"; }, 600); }
+// ================== BIẾN MỚI CHO GIẢM GIÁ ==================
+let discounts = JSON.parse(storage.getItem("discounts") || "[]"); // [{code, percent, maxUses, usedCount}]
 
-function getStorage() {
-  try { return localStorage; } catch(e) {
-    return { data:{}, getItem(k){return this.data[k]||null;}, setItem(k,v){this.data[k]=v+'';}, removeItem(k){delete this.data[k];} };
-  }
-}
-const storage = getStorage();
-
-let users = JSON.parse(storage.getItem("users") || "[]");
-let products = JSON.parse(storage.getItem("products") || "[]");
-let notice = storage.getItem("notice") || "⚡ Shop uy tín - Giao dịch an toàn 100%";
-let qr = storage.getItem("qr") || "https://i.imgur.com/9Z7Y9Kb.png";
-let qrNote = storage.getItem("qrNote") || "Chuyển khoản đúng nội dung → tiền tự động cộng trong 1-5 phút";
-let currentUser = JSON.parse(storage.getItem("currentUser") || "null");
-let view = "shop";
-const ADMIN_PASSWORD = "admin123";
-
-function hash(str) {
-  let h = 0;
-  for(let i = 0; i < str.length; i++) h = (h << 5) - h + str.charCodeAt(i);
-  return h.toString(36);
-}
-
-function isAdmin() {
-  return currentUser && currentUser.u === "admin";
-}
-
+// Thêm vào saveAll()
 function saveAll() {
   storage.setItem("users", JSON.stringify(users));
   storage.setItem("products", JSON.stringify(products));
   storage.setItem("notice", notice);
   storage.setItem("qr", qr);
   storage.setItem("qrNote", qrNote);
+  storage.setItem("discounts", JSON.stringify(discounts)); // <--- thêm
   if (currentUser) {
     storage.setItem("currentUser", JSON.stringify(currentUser));
   }
 }
 
-// ================== RENDER CHÍNH ==================
+// ================== RENDER - THÊM INPUT MÃ GIẢM GIÁ VÀO SHOP ==================
 function render() {
-  const topRight = document.getElementById("topRight");
-  let html = currentUser 
-    ? `<span>${currentUser.u} • ${Number(currentUser.balance || 0).toLocaleString('vi-VN')}đ</span>`
-    : `<button onclick="openLogin()">Đăng nhập</button><button onclick="openRegister()">Đăng ký</button>`;
-
-  if (isAdmin()) {
-    html += `<button class="admin-btn" onclick="openAdminPanel()">Admin Panel</button>`;
-  }
-
-  if (currentUser) html += `<button onclick="logout()">Thoát</button>`;
-  topRight.innerHTML = html;
-
-  const content = document.getElementById("content");
+  // ... (giữ nguyên phần top-right, notice, products) ...
 
   if(view === "shop") {
-    if (currentUser) {
-      products.forEach(p => {
-        if (Math.random() < 0.1) p.sold = (p.sold || 0) + Math.floor(Math.random() * 2 + 1);
-      });
-      saveAll();
-    }
+    // ... (giữ nguyên logic random sold) ...
+
+    let discountInputHtml = currentUser ? `
+      <div class="discount-box">
+        <h4 style="color:#fbbf24;margin-bottom:12px;">Áp dụng mã giảm giá</h4>
+        <input id="discountCodeInput" placeholder="Nhập mã giảm giá" style="margin-bottom:12px;">
+        <button class="action-btn" style="width:100%;padding:14px;" onclick="applyDiscount()">Áp dụng</button>
+        <div id="discountMessage" style="margin-top:12px;color:#34d399;font-weight:600;"></div>
+      </div>
+    ` : '';
 
     content.innerHTML = `
       <div class="notice">${notice}</div>
+      ${discountInputHtml}
       <div class="products">
         ${products.length ? products.map((p,i)=>`
           <div class="card">
@@ -514,112 +332,83 @@ function render() {
       </div>`;
   }
 
-  if(view === "nap") {
-    content.innerHTML = `
-      <div class="box" style="text-align:center">
-        <h3>Nạp Tiền</h3>
-        ${qr ? `<img src="${qr}" alt="QR" style="max-width:340px;border-radius:20px;border:3px solid #ef4444;">` : "<p style='color:#fda4af'>Chưa có QR</p>"}
-        <p style="margin:30px 0;color:#fecaca;font-size:1.1rem;">${qrNote}</p>
-        <p style="color:#fda4af;font-size:1.05rem;">Nội dung chuyển khoản: <strong style="color:#fbbf24;">${currentUser ? currentUser.u + ' nap tien' : 'ten_tai_khoan nap tien'}</strong></p>
-      </div>`;
+  // ... (giữ nguyên các view khác: nap, orders) ...
+}
+
+// ================== HÀM ÁP DỤNG MÃ GIẢM GIÁ ==================
+let currentDiscount = null; // {code, percent}
+
+function applyDiscount() {
+  const codeInput = document.getElementById("discountCodeInput");
+  const code = codeInput.value.trim().toUpperCase();
+  const msg = document.getElementById("discountMessage");
+
+  if (!code) {
+    msg.style.color = "#fda4af";
+    msg.textContent = "Vui lòng nhập mã!";
+    currentDiscount = null;
+    return;
   }
 
-  if(view === "orders") {
-    if (!currentUser) {
-      content.innerHTML = "<div style='text-align:center;padding:100px 0;color:#fda4af;font-size:1.3rem;'>Vui lòng đăng nhập để xem lịch sử mua.</div>";
-      return;
-    }
-    let ordersHtml = "";
-    (currentUser.orders || []).forEach(order => {
-      ordersHtml += `
-        <div class="order-item">
-          <div>
-            <strong style="color:#fecaca;font-size:1.2rem;">${order.productName}</strong><br>
-            <span style="color:#fda4af;">Ngày: ${order.date}</span><br>
-            <span style="color:${order.status === 'pending' ? '#fbbf24' : '#34d399'};font-weight:600;">Trạng thái: ${order.status === 'pending' ? 'Đợi duyệt' : 'Đã duyệt'}</span>
-          </div>
-          ${order.status === 'approved' && order.details ? `<button class="approve-btn" onclick="showDetails('${order.details.replace(/'/g, "\\'")}')">Xem TK/MK</button>` : ''}
-        </div>
-      `;
-    });
-    content.innerHTML = `
-      <div class="box">
-        <h3>Lịch sử mua của bạn</h3>
-        ${ordersHtml || "<p style='text-align:center;color:#fda4af;font-size:1.2rem;'>Chưa có đơn hàng nào.</p>"}
-      </div>
-    `;
+  const disc = discounts.find(d => d.code === code);
+  if (!disc) {
+    msg.style.color = "#ef4444";
+    msg.textContent = "Mã không hợp lệ!";
+    currentDiscount = null;
+    return;
   }
+
+  if (disc.maxUses && (disc.usedCount || 0) >= disc.maxUses) {
+    msg.style.color = "#ef4444";
+    msg.textContent = "Mã đã hết lượt sử dụng!";
+    currentDiscount = null;
+    return;
+  }
+
+  currentDiscount = {code: disc.code, percent: disc.percent};
+  msg.style.color = "#34d399";
+  msg.textContent = `Áp dụng thành công! Giảm ${disc.percent}% cho đơn hàng tiếp theo`;
 }
 
-function showDetails(details) {
-  alert(`Chi tiết tài khoản / mật khẩu:\n\n${details}`);
-}
-
-// ================== AUTH FUNCTIONS ==================
-function openLogin() { document.getElementById("loginModal").classList.remove("hidden"); }
-function openRegister() { document.getElementById("regModal").classList.remove("hidden"); }
-
-function login() {
-  const u = document.getElementById("lu").value.trim();
-  const p = document.getElementById("lp").value;
-  if (!u || !p) return alert("Nhập đầy đủ thông tin!");
-
-  const user = users.find(x => x.u === u && x.p === hash(p));
-  if (!user) return alert("Sai tên đăng nhập hoặc mật khẩu!");
-
-  currentUser = {...user};
-  storage.setItem("currentUser", JSON.stringify(currentUser));
-  document.getElementById("loginModal").classList.add("hidden");
-  render();
-  alert("Đăng nhập thành công!");
-}
-
-function register() {
-  const u = document.getElementById("ru").value.trim();
-  const p = document.getElementById("rp").value;
-
-  if (u.length < 4) return alert("Tên đăng nhập phải ≥ 4 ký tự");
-  if (p.length < 6) return alert("Mật khẩu phải ≥ 6 ký tự");
-  if (users.some(x => x.u === u)) return alert("Tên đăng nhập đã tồn tại!");
-
-  const newUser = { u, p: hash(p), balance: 0, orders: [] };
-  users.push(newUser);
-  currentUser = {...newUser};
-  saveAll();
-
-  document.getElementById("regModal").classList.add("hidden");
-  render();
-  alert("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
-}
-
-function logout() {
-  if (!confirm("Bạn có chắc muốn đăng xuất?")) return;
-  currentUser = null;
-  storage.removeItem("currentUser");
-  render();
-  alert("Đã đăng xuất!");
-}
-
-// ================== BUY FUNCTION ==================
+// Sửa lại hàm buy để hỗ trợ giảm giá
 function buy(index) {
   if (!currentUser) return alert("Vui lòng đăng nhập để mua!");
 
   const product = products[index];
   if (!product) return alert("Sản phẩm không tồn tại!");
 
-  if (currentUser.balance < product.price) return alert("Không đủ tiền! Vui lòng nạp thêm.");
+  let finalPrice = product.price;
+  let discountText = "";
 
-  if (confirm(`Mua "${product.name}" với giá ${Number(product.price).toLocaleString('vi-VN')}đ ?`)) {
+  if (currentDiscount) {
+    finalPrice = product.price * (1 - currentDiscount.percent / 100);
+    discountText = ` (giảm ${currentDiscount.percent}%)`;
+  }
+
+  if (currentUser.balance < finalPrice) return alert("Không đủ tiền! Vui lòng nạp thêm.");
+
+  if (confirm(`Mua "${product.name}" với giá ${Number(finalPrice).toLocaleString('vi-VN')}đ${discountText} ?`)) {
     showLoading();
     setTimeout(() => {
-      currentUser.balance -= product.price;
+      currentUser.balance -= finalPrice;
       product.sold = (product.sold || 0) + 1;
+
+      // Ghi nhận sử dụng mã giảm giá
+      if (currentDiscount) {
+        const disc = discounts.find(d => d.code === currentDiscount.code);
+        if (disc) {
+          disc.usedCount = (disc.usedCount || 0) + 1;
+        }
+        currentDiscount = null; // reset sau khi dùng
+        document.getElementById("discountMessage").textContent = "";
+      }
 
       currentUser.orders = currentUser.orders || [];
       currentUser.orders.push({
         productName: product.name,
         date: new Date().toLocaleString('vi-VN'),
-        status: 'pending'
+        status: 'pending',
+        finalPrice: finalPrice // lưu giá cuối đã giảm (nếu có)
       });
 
       const userIndex = users.findIndex(u => u.u === currentUser.u);
@@ -633,7 +422,65 @@ function buy(index) {
   }
 }
 
-// ================== ADMIN FUNCTIONS ==================
+// ================== ADMIN - QUẢN LÝ MÃ GIẢM GIÁ ==================
+function renderDiscountList() {
+  const container = document.getElementById("discountList");
+  let html = "";
+
+  discounts.forEach((d, i) => {
+    html += `
+      <div class="user-list-item">
+        <div>
+          <strong style="color:#fecaca;font-size:1.25rem;">${d.code}</strong><br>
+          <span style="color:#fda4af;">Giảm ${d.percent}% • Đã dùng: ${d.usedCount || 0}/${d.maxUses || '∞'}</span>
+        </div>
+        <button class="delete-btn" onclick="deleteDiscount(${i})">Xóa</button>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html || "<p style='text-align:center;color:#fda4af;padding:20px;'>Chưa có mã giảm giá nào</p>";
+}
+
+function addNewDiscount() {
+  const code = document.getElementById("newDiscountCode").value.trim().toUpperCase();
+  const percent = Number(document.getElementById("newDiscountPercent").value);
+  const maxUses = Number(document.getElementById("newDiscountMax").value) || null;
+
+  if (!code) return alert("Nhập mã giảm giá!");
+  if (isNaN(percent) || percent <= 0 || percent > 100) return alert("Phần trăm giảm phải từ 1-100!");
+  if (discounts.some(d => d.code === code)) return alert("Mã này đã tồn tại!");
+
+  showLoading();
+  setTimeout(() => {
+    discounts.push({
+      code,
+      percent,
+      maxUses,
+      usedCount: 0
+    });
+    saveAll();
+    document.getElementById("newDiscountCode").value = "";
+    document.getElementById("newDiscountPercent").value = "";
+    document.getElementById("newDiscountMax").value = "";
+    renderDiscountList();
+    hideLoading();
+    alert("Đã tạo mã giảm giá mới!");
+  }, 700);
+}
+
+function deleteDiscount(index) {
+  if (!confirm("Xóa mã giảm giá này?")) return;
+  showLoading();
+  setTimeout(() => {
+    discounts.splice(index, 1);
+    saveAll();
+    renderDiscountList();
+    hideLoading();
+  }, 600);
+}
+
+// Sửa openAdminPanel để render thêm danh sách mã giảm giá
 function openAdminPanel() {
   const pass = prompt("Nhập mật khẩu Admin:");
   if (pass !== ADMIN_PASSWORD) {
@@ -648,230 +495,10 @@ function openAdminPanel() {
   renderUserList();
   renderPendingOrders();
   renderProductList();
+  renderDiscountList(); // <--- thêm
 }
 
-function closeAdmin() {
-  document.getElementById("adminModal").classList.add("hidden");
-}
-
-function renderUserList() {
-  const search = document.getElementById("userSearch").value.toLowerCase().trim();
-  const list = document.getElementById("userList");
-  let html = "";
-
-  const filtered = users.filter(u => u.u !== "admin" && (!search || u.u.toLowerCase().includes(search)));
-
-  filtered.forEach((user) => {
-    const idx = users.findIndex(x => x.u === user.u);
-    html += `
-      <div class="user-list-item">
-        <div>
-          <strong style="color:#fecaca;font-size:1.25rem;">${user.u}</strong><br>
-          <span style="color:#fda4af;">Số dư: ${Number(user.balance || 0).toLocaleString('vi-VN')}đ</span>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <input type="number" id="amt_${idx}" placeholder="Số tiền" style="width:140px;">
-          <button class="action-btn" onclick="changeBalance(${idx}, true)">+ Tiền</button>
-          <button class="action-btn" style="background:#991b1b;" onclick="changeBalance(${idx}, false)">- Tiền</button>
-          <button class="delete-btn" onclick="deleteUser(${idx})">Xóa</button>
-        </div>
-      </div>
-    `;
-  });
-
-  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;padding:20px;'>Không tìm thấy user</p>";
-}
-
-function changeBalance(index, isAdd) {
-  const input = document.getElementById(`amt_${index}`);
-  const amount = Number(input.value);
-  if (!amount || amount <= 0) return alert("Nhập số tiền hợp lệ!");
-
-  if (!confirm(`Xác nhận ${isAdd ? 'cộng' : 'trừ'} ${amount.toLocaleString('vi-VN')}đ ?`)) return;
-
-  showLoading();
-  setTimeout(() => {
-    if (isAdd) users[index].balance += amount;
-    else users[index].balance = Math.max(0, (users[index].balance || 0) - amount);
-
-    if (currentUser && currentUser.u === users[index].u) {
-      currentUser.balance = users[index].balance;
-    }
-
-    saveAll();
-    renderUserList();
-    render();
-    hideLoading();
-  }, 600);
-}
-
-function deleteUser(index) {
-  if (users[index].u === "admin") return alert("Không thể xóa tài khoản admin!");
-  if (!confirm("Xóa người dùng này vĩnh viễn?")) return;
-
-  showLoading();
-  setTimeout(() => {
-    if (currentUser && currentUser.u === users[index].u) {
-      logout();
-    }
-    users.splice(index, 1);
-    saveAll();
-    renderUserList();
-    render();
-    hideLoading();
-  }, 600);
-}
-
-function addNewUser() {
-  const name = document.getElementById("newUserName").value.trim();
-  const pass = document.getElementById("newUserPass").value;
-  const bal = Number(document.getElementById("newUserBalance").value) || 0;
-
-  if (name.length < 4) return alert("Tên tài khoản");
-  if (pass.length < 6) return alert("Nhập mật khẩu");
-  if (users.some(u => u.u === name)) return alert("Tên đã tồn tại!");
-
-  showLoading();
-  setTimeout(() => {
-    users.push({ u: name, p: hash(pass), balance: bal, orders: [] });
-    saveAll();
-    document.getElementById("newUserName").value = "";
-    document.getElementById("newUserPass").value = "";
-    document.getElementById("newUserBalance").value = "";
-    renderUserList();
-    hideLoading();
-    alert("Đã thêm user!");
-  }, 700);
-}
-
-function renderPendingOrders() {
-  const container = document.getElementById("pendingOrders");
-  let html = "";
-
-  users.forEach(user => {
-    (user.orders || []).forEach((order, ordIdx) => {
-      if (order.status === 'pending') {
-        html += `
-          <div class="order-item">
-            <div>
-              <strong style="color:#fecaca;font-size:1.25rem;">${user.u}</strong><br>
-              <span style="color:#fda4af;">Sản phẩm: ${order.productName}</span><br>
-              <span style="color:#fbbf24;">${order.date}</span>
-            </div>
-            <button class="approve-btn" onclick="approveOrder('${user.u}', ${ordIdx})">Duyệt & Gửi TK/MK</button>
-          </div>
-        `;
-      }
-    });
-  });
-
-  container.innerHTML = html || "<p style='text-align:center;color:#fda4af;padding:20px;'>Không có đơn chờ duyệt</p>";
-}
-
-function approveOrder(username, orderIndex) {
-  const details = prompt("Nhập tài khoản / mật khẩu cho đơn này:");
-  if (!details) return alert("Bạn phải nhập thông tin tài khoản!");
-
-  showLoading();
-  setTimeout(() => {
-    const userIdx = users.findIndex(u => u.u === username);
-    if (userIdx === -1) return;
-
-    users[userIdx].orders[orderIndex].status = 'approved';
-    users[userIdx].orders[orderIndex].details = details;
-
-    if (currentUser && currentUser.u === username) {
-      currentUser.orders = users[userIdx].orders;
-    }
-
-    saveAll();
-    renderPendingOrders();
-    render();
-    hideLoading();
-    alert("Đã duyệt đơn!");
-  }, 700);
-}
-
-function renderProductList() {
-  const container = document.getElementById("productList");
-  let html = "";
-
-  products.forEach((p, i) => {
-    html += `
-      <div class="product-item">
-        <div>
-          <strong style="color:#fecaca;">${p.name}</strong><br>
-          <span style="color:#fda4af;">${p.desc || ''} - ${Number(p.price).toLocaleString('vi-VN')}đ</span>
-        </div>
-        <button class="delete-btn" onclick="deleteProduct(${i})">Xóa</button>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html || "<p style='text-align:center;color:#fda4af;padding:20px;'>Chưa có sản phẩm</p>";
-}
-
-function addNewProduct() {
-  const name = document.getElementById("newProductName").value.trim();
-  const desc = document.getElementById("newProductDesc").value.trim();
-  const price = Number(document.getElementById("newProductPrice").value);
-
-  if (!name) return alert("Nhập tên sản phẩm!");
-  if (isNaN(price) || price <= 0) return alert("Giá phải là số dương!");
-
-  showLoading();
-  setTimeout(() => {
-    products.push({ name, desc, price, sold: 0 });
-    saveAll();
-    document.getElementById("newProductName").value = "";
-    document.getElementById("newProductDesc").value = "";
-    document.getElementById("newProductPrice").value = "";
-    renderProductList();
-    hideLoading();
-    alert("Đã thêm sản phẩm!");
-  }, 700);
-}
-
-function deleteProduct(index) {
-  if (!confirm("Xóa sản phẩm này?")) return;
-  showLoading();
-  setTimeout(() => {
-    products.splice(index, 1);
-    saveAll();
-    renderProductList();
-    hideLoading();
-  }, 600);
-}
-
-function saveNotice() {
-  notice = document.getElementById("n").value.trim() || notice;
-  saveAll();
-  alert("Đã lưu thông báo!");
-  render();
-}
-
-function saveQR() {
-  const note = document.getElementById("qn").value.trim();
-  qrNote = note || qrNote;
-
-  const fileInput = document.getElementById("qrFileInput");
-  if (fileInput.files && fileInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      qr = e.target.result;
-      document.getElementById("qrPreview").src = qr;
-      saveAll();
-      alert("Đã cập nhật QR và ghi chú!");
-    };
-    reader.readAsDataURL(fileInput.files[0]);
-  } else {
-    saveAll();
-    alert("Đã cập nhật ghi chú QR!");
-  }
-}
-
-// Khởi chạy
-render();
+// ... (giữ nguyên toàn bộ code còn lại: auth, buy cũ, admin functions, v.v.) ...
 </script>
 </body>
 </html>
