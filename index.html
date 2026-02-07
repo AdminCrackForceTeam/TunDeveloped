@@ -44,7 +44,6 @@
     align-items: center;
     gap: 16px;
   }
-
   .top-right button, .top-right .admin-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
@@ -67,6 +66,8 @@
     max-width: 1400px;
     margin: 30px auto;
     padding: 0 20px;
+    display: flex;
+    gap: 30px;
   }
 
   .sidebar {
@@ -148,7 +149,14 @@
     color: #fbbf24;
     font-size: 1.6rem;
     font-weight: 800;
-    margin: 16px 0;
+    margin: 12px 0 8px;
+  }
+
+  .sold {
+    color: #34d399;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 16px;
   }
 
   .buy {
@@ -177,7 +185,7 @@
     backdrop-filter: blur(8px);
   }
 
-  .box h3 {
+  .box h3, .box h4 {
     color: #f87171;
     margin-bottom: 20px;
   }
@@ -219,14 +227,28 @@
   .delete-btn {
     background: #991b1b;
     color: white;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    font-size: 0.9rem;
   }
 
   .delete-btn:hover {
     background: #b91c1c;
+  }
+
+  .product-item, .user-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    background: rgba(40, 0, 0, 0.5);
+    border-radius: 10px;
+    margin: 10px 0;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .modal {
@@ -246,13 +268,15 @@
 
   .modal .box {
     width: 90%;
-    max-width: 480px;
+    max-width: 900px;
     background: rgba(20, 0, 0, 0.95);
     border-radius: 20px;
     padding: 40px 32px;
     border: 1px solid rgba(239, 68, 68, 0.35);
     box-shadow: 0 30px 70px rgba(0,0,0,0.7);
     position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
   }
 
   .modal h3 {
@@ -262,15 +286,12 @@
     font-size: 1.6rem;
   }
 
-  .user-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px;
-    background: rgba(40, 0, 0, 0.5);
-    border-radius: 10px;
-    margin: 10px 0;
-    border: 1px solid rgba(239, 68, 68, 0.15);
+  .qr-preview {
+    max-width: 280px;
+    border-radius: 12px;
+    border: 2px solid #ef4444;
+    margin: 16px auto;
+    display: block;
   }
 
   @media (max-width: 768px) {
@@ -291,7 +312,7 @@
   <div class="top-right" id="topRight"></div>
 </div>
 
-<div class="wrap" style="display:flex;gap:30px;">
+<div class="wrap">
   <div class="sidebar">
     <h3>MENU</h3>
     <a onclick="view='shop';render()">Cửa hàng</a>
@@ -302,7 +323,7 @@
 
 <!-- Modal Đăng nhập -->
 <div class="modal hidden" id="loginModal">
-  <div class="box">
+  <div class="box" style="max-width:480px">
     <h3>Đăng Nhập</h3>
     <input id="lu" placeholder="Tên đăng nhập">
     <input id="lp" type="password" placeholder="Mật khẩu">
@@ -312,7 +333,7 @@
 
 <!-- Modal Đăng ký -->
 <div class="modal hidden" id="regModal">
-  <div class="box">
+  <div class="box" style="max-width:480px">
     <h3>Tạo Tài Khoản Mới</h3>
     <input id="ru" placeholder="Tên đăng nhập (≥4 ký tự)">
     <input id="rp" type="password" placeholder="Mật khẩu (≥6 ký tự)">
@@ -320,11 +341,12 @@
   </div>
 </div>
 
-<!-- Modal Admin (quản lý user + các thứ khác) -->
+<!-- Modal Admin -->
 <div class="modal hidden" id="adminModal">
-  <div class="box" style="max-width:900px;width:95%;">
+  <div class="box">
     <h3>Admin Panel</h3>
-    
+
+    <!-- Quản lý người dùng -->
     <div class="box">
       <h4 style="color:#fecaca;">Quản lý người dùng</h4>
       <div id="userList"></div>
@@ -336,17 +358,33 @@
       <button class="action-btn" onclick="addNewUser()">Thêm User</button>
     </div>
 
+    <!-- Quản lý sản phẩm -->
+    <div class="box">
+      <h4 style="color:#fecaca;">Quản lý sản phẩm</h4>
+      <div id="productList"></div>
+      
+      <h4 style="color:#fecaca;margin-top:30px;">Thêm sản phẩm mới</h4>
+      <input id="newProductName" placeholder="Tên sản phẩm">
+      <input id="newProductDesc" placeholder="Mô tả ngắn">
+      <input id="newProductPrice" type="number" placeholder="Giá (đ)">
+      <button class="action-btn" onclick="addNewProduct()">Thêm Sản Phẩm</button>
+    </div>
+
+    <!-- Thông báo trang chủ -->
     <div class="box">
       <h4 style="color:#fecaca;">Thông báo trang chủ</h4>
       <textarea id="n" rows="3">${notice}</textarea>
       <button class="action-btn" onclick="saveNotice()">Lưu</button>
     </div>
 
+    <!-- QR Nạp tiền -->
     <div class="box">
       <h4 style="color:#fecaca;">QR Nạp tiền</h4>
-      <input id="q" value="${qr}" placeholder="Link ảnh QR">
-      <input id="qn" value="${qrNote}" placeholder="Ghi chú">
-      <button class="action-btn" onclick="saveQR()">Lưu QR</button>
+      <input type="file" id="qrFileInput" accept="image/*">
+      <p style="font-size:0.9rem;color:#fda4af;margin:8px 0;">Chọn ảnh QR mới (hoặc giữ nguyên QR cũ)</p>
+      <img id="qrPreview" class="qr-preview" src="${qr}" alt="QR hiện tại">
+      <input id="qn" value="${qrNote}" placeholder="Ghi chú (hiển thị dưới QR)">
+      <button class="action-btn" onclick="saveQR()">Lưu QR & Ghi chú</button>
     </div>
 
     <button class="action-btn" style="background:#4b5563;margin-top:20px;" onclick="closeAdmin()">Đóng</button>
@@ -354,6 +392,7 @@
 </div>
 
 <script>
+// ================== CÁC BIẾN VÀ HÀM CƠ BẢN ==================
 const loadingOverlay = document.getElementById("loadingOverlay");
 function showLoading() { loadingOverlay.style.opacity = "1"; loadingOverlay.style.visibility = "visible"; }
 function hideLoading() { setTimeout(() => { loadingOverlay.style.opacity = "0"; loadingOverlay.style.visibility = "hidden"; }, 400); }
@@ -372,7 +411,7 @@ let qr = storage.getItem("qr") || "https://i.imgur.com/9Z7Y9Kb.png";
 let qrNote = storage.getItem("qrNote") || "Chuyển khoản đúng nội dung → tiền tự động cộng trong 1-5 phút";
 let currentUser = JSON.parse(storage.getItem("currentUser") || "null");
 let view = "shop";
-const ADMIN_PASSWORD = "admin123"; // đổi nếu muốn
+const ADMIN_PASSWORD = "admin123";
 
 function hash(str) {
   let h = 0;
@@ -381,9 +420,10 @@ function hash(str) {
 }
 
 function isAdmin() {
-  return currentUser && currentUser.u === "admin"; // hoặc thêm flag isAdmin: true khi tạo admin
+  return currentUser && currentUser.u === "admin";
 }
 
+// ================== RENDER CHÍNH ==================
 function render() {
   const topRight = document.getElementById("topRight");
   let html = currentUser 
@@ -402,6 +442,14 @@ function render() {
   const content = document.getElementById("content");
 
   if(view === "shop") {
+    // Tăng nhẹ số lượng đã bán ngẫu nhiên để trông tự nhiên (chỉ khi có user đăng nhập)
+    if (currentUser) {
+      products.forEach(p => {
+        if (Math.random() < 0.08) p.sold += Math.floor(Math.random() * 3) + 1; // tăng 1-3 ngẫu nhiên
+      });
+      storage.setItem("products", JSON.stringify(products));
+    }
+
     content.innerHTML = `
       <div class="notice">${notice}</div>
       <div class="products">
@@ -410,6 +458,7 @@ function render() {
             <h4>${p.name}</h4>
             <div style="color:#fda4af;margin:8px 0;">${p.desc}</div>
             <div class="price">${Number(p.price).toLocaleString('vi-VN')}đ</div>
+            <div class="sold">Đã có <strong>${Number(p.sold || 0).toLocaleString('vi-VN')}</strong> người mua</div>
             <div class="buy" onclick="buy(${i})">MUA NGAY</div>
           </div>
         `).join("") : "<div style='text-align:center;padding:80px 0;color:#fda4af;'>Chưa có sản phẩm</div>"}
@@ -422,15 +471,19 @@ function render() {
         <h3>Nạp Tiền</h3>
         ${qr ? `<img src="${qr}" alt="QR" style="max-width:300px;border-radius:16px;border:2px solid #ef4444;">` : "<p style='color:#fda4af'>Chưa có QR</p>"}
         <p style="margin:25px 0;color:#fecaca;">${qrNote}</p>
+        <p style="color:#fda4af;font-size:0.95rem;">Nội dung chuyển khoản: <strong style="color:#fbbf24;">${currentUser ? currentUser.u + ' nap tien' : 'ten_tai_khoan nap tien'}</strong></p>
       </div>`;
   }
 }
 
+// ================== ADMIN PANEL ==================
 function openAdminPanel() {
   const pass = prompt("Xác nhận mật khẩu Admin:");
   if (pass === ADMIN_PASSWORD) {
     document.getElementById("adminModal").classList.remove("hidden");
     renderUserList();
+    renderProductList();
+    document.getElementById("qrPreview").src = qr;
   } else if (pass !== null) {
     alert("Mật khẩu sai!");
   }
@@ -440,17 +493,19 @@ function closeAdmin() {
   document.getElementById("adminModal").classList.add("hidden");
 }
 
+// ----- User -----
 function renderUserList() {
   const list = document.getElementById("userList");
   let html = "";
   users.forEach((user, i) => {
+    if (user.u === "admin") return;
     html += `
       <div class="user-list-item">
         <div>
           <strong style="color:#fecaca;">${user.u}</strong><br>
           <span style="color:#fda4af;">Số dư: ${Number(user.balance).toLocaleString('vi-VN')}đ</span>
         </div>
-        <div style="display:flex;gap:10px;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <input type="number" id="amount_${i}" placeholder="Số tiền" style="width:120px;">
           <button class="action-btn" style="padding:8px 14px;font-size:0.9rem;" onclick="changeBalance(${i}, true)">+ Tiền</button>
           <button class="action-btn" style="background:#991b1b;padding:8px 14px;font-size:0.9rem;" onclick="changeBalance(${i}, false)">- Tiền</button>
@@ -470,11 +525,8 @@ function changeBalance(index, isAdd) {
   if (confirm(`Xác nhận ${isAdd ? "cộng" : "trừ"} ${amount.toLocaleString('vi-VN')}đ cho user này?`)) {
     showLoading();
     setTimeout(() => {
-      if (isAdd) {
-        users[index].balance += amount;
-      } else {
-        users[index].balance = Math.max(0, users[index].balance - amount);
-      }
+      if (isAdd) users[index].balance += amount;
+      else users[index].balance = Math.max(0, users[index].balance - amount);
       storage.setItem("users", JSON.stringify(users));
       if (currentUser && currentUser.u === users[index].u) {
         currentUser.balance = users[index].balance;
@@ -491,9 +543,7 @@ function deleteUser(index) {
   if (confirm("Xóa người dùng này vĩnh viễn?")) {
     showLoading();
     setTimeout(() => {
-      if (users[index].u === currentUser?.u) {
-        logout();
-      }
+      if (users[index].u === currentUser?.u) logout();
       users.splice(index, 1);
       storage.setItem("users", JSON.stringify(users));
       renderUserList();
@@ -524,7 +574,125 @@ function addNewUser() {
   }, 800);
 }
 
-// Các hàm còn lại (register, login, buy, saveNotice, saveQR, etc.)
+// ----- Sản phẩm -----
+function renderProductList() {
+  const list = document.getElementById("productList");
+  let html = "";
+  products.forEach((p, i) => {
+    html += `
+      <div class="product-item">
+        <div>
+          <strong style="color:#fecaca;">${p.name}</strong><br>
+          <span style="color:#fda4af;">${p.desc} - ${Number(p.price).toLocaleString('vi-VN')}đ</span><br>
+          <span style="color:#34d399;">Đã bán: ${Number(p.sold || 0).toLocaleString('vi-VN')}</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <input type="number" id="sold_${i}" value="${p.sold || 0}" placeholder="Số đã bán" style="width:110px;">
+          <button class="action-btn" style="padding:8px 12px;font-size:0.9rem;" onclick="updateSold(${i})">Cập nhật</button>
+          <button class="delete-btn" onclick="deleteProduct(${i})">Xóa</button>
+        </div>
+      </div>
+    `;
+  });
+  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Chưa có sản phẩm nào</p>";
+}
+
+function updateSold(index) {
+  const soldInput = document.getElementById(`sold_${index}`);
+  const newSold = Number(soldInput.value);
+  if (isNaN(newSold) || newSold < 0) return alert("Số lượng không hợp lệ!");
+
+  showLoading();
+  setTimeout(() => {
+    products[index].sold = newSold;
+    storage.setItem("products", JSON.stringify(products));
+    renderProductList();
+    render();
+    hideLoading();
+  }, 400);
+}
+
+function addNewProduct() {
+  const name = document.getElementById("newProductName").value.trim();
+  const desc = document.getElementById("newProductDesc").value.trim();
+  const price = Number(document.getElementById("newProductPrice").value);
+
+  if (!name) return alert("Vui lòng nhập tên sản phẩm");
+  if (!price || price <= 0) return alert("Giá phải lớn hơn 0");
+
+  showLoading();
+  setTimeout(() => {
+    products.push({ 
+      name, 
+      desc, 
+      price, 
+      sold: 0  // mặc định 0, admin có thể chỉnh sau
+    });
+    storage.setItem("products", JSON.stringify(products));
+    document.getElementById("newProductName").value = "";
+    document.getElementById("newProductDesc").value = "";
+    document.getElementById("newProductPrice").value = "";
+    renderProductList();
+    render();
+    hideLoading();
+    alert("Đã thêm sản phẩm mới!");
+  }, 800);
+}
+
+function deleteProduct(index) {
+  if (confirm("Xóa sản phẩm này?")) {
+    showLoading();
+    setTimeout(() => {
+      products.splice(index, 1);
+      storage.setItem("products", JSON.stringify(products));
+      renderProductList();
+      render();
+      hideLoading();
+    }, 600);
+  }
+}
+
+// ----- QR -----
+function saveQR() {
+  const note = document.getElementById("qn").value;
+  const fileInput = document.getElementById("qrFileInput");
+
+  showLoading();
+
+  if (fileInput.files && fileInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      qr = e.target.result;
+      qrNote = note;
+      storage.setItem("qr", qr);
+      storage.setItem("qrNote", qrNote);
+      document.getElementById("qrPreview").src = qr;
+      render();
+      hideLoading();
+      alert("Đã cập nhật QR và ghi chú!");
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+  } else {
+    qrNote = note;
+    storage.setItem("qrNote", qrNote);
+    render();
+    hideLoading();
+    alert("Đã cập nhật ghi chú!");
+  }
+}
+
+// ================== CÁC HÀM KHÁC ==================
+function saveNotice() { 
+  showLoading();
+  setTimeout(() => {
+    notice = document.getElementById("n").value;
+    storage.setItem("notice", notice);
+    render();
+    hideLoading();
+    alert("Đã lưu thông báo!");
+  }, 600);
+}
+
 function register() {
   const u = document.getElementById("ru").value.trim();
   const p = document.getElementById("rp").value;
@@ -581,52 +749,30 @@ function buy(i) {
     currentUser.balance -= price;
     const idx = users.findIndex(x => x.u === currentUser.u);
     users[idx].balance = currentUser.balance;
+    // Tăng số lượng đã bán khi mua thật (tùy chọn)
+    products[i].sold = (products[i].sold || 0) + 1;
     storage.setItem("users", JSON.stringify(users));
+    storage.setItem("products", JSON.stringify(products));
     storage.setItem("currentUser", JSON.stringify(currentUser));
     render();
     hideLoading();
-    alert("Mua thành công! Hàng sẽ gửi qua tin nhắn.");
+    alert("Mua thành công! Hàng sẽ gửi qua tin nhắn hoặc Telegram.");
   }, 1000);
 }
 
 function openLogin() { document.getElementById("loginModal").classList.remove("hidden"); }
 function openRegister() { document.getElementById("regModal").classList.remove("hidden"); }
 
-function saveNotice() { 
-  showLoading();
-  setTimeout(() => {
-    notice = document.getElementById("n").value;
-    storage.setItem("notice", notice);
-    render();
-    hideLoading();
-    alert("Đã lưu thông báo!");
-  }, 600);
-}
-
-function saveQR() { 
-  showLoading();
-  setTimeout(() => {
-    qr = document.getElementById("q").value;
-    qrNote = document.getElementById("qn").value;
-    storage.setItem("qr", qr);
-    storage.setItem("qrNote", qrNote);
-    render();
-    hideLoading();
-    alert("Đã lưu QR!");
-  }, 600);
-}
-
-// Dữ liệu mẫu
+// ================== KHỞI TẠO DỮ LIỆU MẪU ==================
 if (products.length === 0) {
   products = [
-    { name: "Netflix Premium 1 Tháng", desc: "Full HD - Chính chủ", price: "159000" },
-    { name: "Spotify Premium 3 Tháng", desc: "Chia sẻ 6 người", price: "290000" },
-    { name: "Canva Pro 1 Năm", desc: "Không giới hạn", price: "890000" }
+    { name: "Netflix Premium 1 Tháng", desc: "Full HD - Chính chủ", price: "159000", sold: 1247 },
+    { name: "Spotify Premium 3 Tháng", desc: "Chia sẻ 6 người", price: "290000", sold: 893 },
+    { name: "Canva Pro 1 Năm", desc: "Không giới hạn", price: "890000", sold: 456 }
   ];
   storage.setItem("products", JSON.stringify(products));
 }
 
-// Tạo admin mặc định nếu chưa có
 if (!users.some(u => u.u === "admin")) {
   users.push({ u: "admin", p: hash("admin123"), balance: 999999999 });
   storage.setItem("users", JSON.stringify(users));
