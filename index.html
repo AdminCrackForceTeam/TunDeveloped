@@ -238,7 +238,21 @@
     background: #b91c1c;
   }
 
-  .product-item, .user-list-item {
+  .approve-btn {
+    background: #16a34a;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .approve-btn:hover {
+    background: #22c55e;
+  }
+
+  .product-item, .user-list-item, .order-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -294,6 +308,23 @@
     display: block;
   }
 
+  .search-input {
+    margin-bottom: 20px;
+  }
+
+  .order-details {
+    background: #16a34a;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .order-details:hover {
+    background: #22c55e;
+  }
+
   @media (max-width: 768px) {
     .wrap { flex-direction: column; }
     .sidebar { width: 100%; }
@@ -317,6 +348,7 @@
     <h3>MENU</h3>
     <a onclick="view='shop';render()">Cửa hàng</a>
     <a onclick="view='nap';render()">Nạp tiền</a>
+    <a onclick="view='orders';render()">Lịch sử mua</a>
   </div>
   <div class="content" id="content"></div>
 </div>
@@ -349,6 +381,7 @@
     <!-- Quản lý người dùng -->
     <div class="box">
       <h4 style="color:#fecaca;">Quản lý người dùng</h4>
+      <input id="userSearch" class="search-input" placeholder="Tìm kiếm user..." oninput="renderUserList()">
       <div id="userList"></div>
       
       <h4 style="color:#fecaca;margin-top:30px;">Thêm người dùng mới</h4>
@@ -356,6 +389,12 @@
       <input id="newUserPass" type="password" placeholder="Mật khẩu">
       <input id="newUserBalance" type="number" placeholder="Số dư ban đầu (đ)">
       <button class="action-btn" onclick="addNewUser()">Thêm User</button>
+    </div>
+
+    <!-- Duyệt đơn hàng -->
+    <div class="box">
+      <h4 style="color:#fecaca;">Duyệt đơn hàng</h4>
+      <div id="pendingOrders"></div>
     </div>
 
     <!-- Quản lý sản phẩm -->
@@ -442,10 +481,10 @@ function render() {
   const content = document.getElementById("content");
 
   if(view === "shop") {
-    // Tăng nhẹ số lượng đã bán ngẫu nhiên để trông tự nhiên (chỉ khi có user đăng nhập)
+    // Tăng nhẹ số lượng đã bán ngẫu nhiên khi có người đăng nhập
     if (currentUser) {
       products.forEach(p => {
-        if (Math.random() < 0.08) p.sold += Math.floor(Math.random() * 3) + 1; // tăng 1-3 ngẫu nhiên
+        if (Math.random() < 0.08) p.sold += Math.floor(Math.random() * 3) + 1;
       });
       storage.setItem("products", JSON.stringify(products));
     }
@@ -474,6 +513,36 @@ function render() {
         <p style="color:#fda4af;font-size:0.95rem;">Nội dung chuyển khoản: <strong style="color:#fbbf24;">${currentUser ? currentUser.u + ' nap tien' : 'ten_tai_khoan nap tien'}</strong></p>
       </div>`;
   }
+
+  if(view === "orders") {
+    if (!currentUser) {
+      content.innerHTML = "<div style='text-align:center;padding:80px 0;color:#fda4af;'>Vui lòng đăng nhập để xem lịch sử mua.</div>";
+      return;
+    }
+    let ordersHtml = "";
+    (currentUser.orders || []).forEach((order, i) => {
+      ordersHtml += `
+        <div class="order-item">
+          <div>
+            <strong style="color:#fecaca;">${order.productName}</strong><br>
+            <span style="color:#fda4af;">Ngày mua: ${order.date}</span><br>
+            <span style="color:${order.status === 'pending' ? '#fbbf24' : '#34d399'};">Trạng thái: ${order.status === 'pending' ? 'Đợi duyệt' : 'Đã duyệt'}</span>
+          </div>
+          ${order.status === 'approved' ? `<button class="order-details" onclick="showDetails('${order.details.replace(/'/g, "\\'")}')">Xem chi tiết</button>` : ''}
+        </div>
+      `;
+    });
+    content.innerHTML = `
+      <div class="box">
+        <h3>Lịch sử mua</h3>
+        ${ordersHtml || "<p style='text-align:center;color:#fda4af;'>Chưa có đơn hàng nào.</p>"}
+      </div>
+    `;
+  }
+}
+
+function showDetails(details) {
+  alert(`Chi tiết đơn hàng: \n${details}`);
 }
 
 // ================== ADMIN PANEL ==================
@@ -482,6 +551,7 @@ function openAdminPanel() {
   if (pass === ADMIN_PASSWORD) {
     document.getElementById("adminModal").classList.remove("hidden");
     renderUserList();
+    renderPendingOrders();
     renderProductList();
     document.getElementById("qrPreview").src = qr;
   } else if (pass !== null) {
@@ -495,10 +565,11 @@ function closeAdmin() {
 
 // ----- User -----
 function renderUserList() {
+  const search = document.getElementById("userSearch").value.toLowerCase();
   const list = document.getElementById("userList");
   let html = "";
   users.forEach((user, i) => {
-    if (user.u === "admin") return;
+    if (user.u === "admin" || !user.u.toLowerCase().includes(search)) return;
     html += `
       <div class="user-list-item">
         <div>
@@ -514,7 +585,7 @@ function renderUserList() {
       </div>
     `;
   });
-  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Chưa có người dùng nào</p>";
+  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Không tìm thấy user.</p>";
 }
 
 function changeBalance(index, isAdd) {
@@ -563,7 +634,7 @@ function addNewUser() {
 
   showLoading();
   setTimeout(() => {
-    users.push({ u: name, p: hash(pass), balance: bal });
+    users.push({ u: name, p: hash(pass), balance: bal, orders: [] });
     storage.setItem("users", JSON.stringify(users));
     document.getElementById("newUserName").value = "";
     document.getElementById("newUserPass").value = "";
@@ -572,6 +643,54 @@ function addNewUser() {
     hideLoading();
     alert("Đã thêm user mới!");
   }, 800);
+}
+
+// ----- Duyệt đơn hàng -----
+function renderPendingOrders() {
+  const list = document.getElementById("pendingOrders");
+  let html = "";
+  let orderIndex = 0; // Chỉ số toàn cục cho đơn hàng pending
+  users.forEach((user) => {
+    (user.orders || []).forEach((order, userOrderIndex) => {
+      if (order.status === 'pending') {
+        html += `
+          <div class="order-item">
+            <div>
+              <strong style="color:#fecaca;">User: ${user.u}</strong><br>
+              <span style="color:#fda4af;">Sản phẩm: ${order.productName}</span><br>
+              <span style="color:#fbbf24;">Ngày: ${order.date}</span>
+            </div>
+            <button class="approve-btn" onclick="approveOrder('${user.u}', ${userOrderIndex})">Duyệt</button>
+          </div>
+        `;
+        orderIndex++;
+      }
+    });
+  });
+  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Không có đơn hàng chờ duyệt.</p>";
+}
+
+function approveOrder(username, orderIndex) {
+  const details = prompt("Nhập chi tiết (tài khoản/mật khẩu):");
+  if (!details) return alert("Vui lòng nhập chi tiết!");
+
+  showLoading();
+  setTimeout(() => {
+    const userIndex = users.findIndex(u => u.u === username);
+    if (userIndex !== -1) {
+      users[userIndex].orders[orderIndex].status = 'approved';
+      users[userIndex].orders[orderIndex].details = details;
+      storage.setItem("users", JSON.stringify(users));
+      if (currentUser && currentUser.u === username) {
+        currentUser.orders = users[userIndex].orders;
+        storage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+      renderPendingOrders();
+      render();
+      hideLoading();
+      alert("Đã duyệt đơn hàng!");
+    }
+  }, 600);
 }
 
 // ----- Sản phẩm -----
@@ -594,7 +713,7 @@ function renderProductList() {
       </div>
     `;
   });
-  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Chưa có sản phẩm nào</p>";
+  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Chưa có sản phẩm nào.</p>";
 }
 
 function updateSold(index) {
@@ -622,12 +741,7 @@ function addNewProduct() {
 
   showLoading();
   setTimeout(() => {
-    products.push({ 
-      name, 
-      desc, 
-      price, 
-      sold: 0  // mặc định 0, admin có thể chỉnh sau
-    });
+    products.push({ name, desc, price, sold: 0 });
     storage.setItem("products", JSON.stringify(products));
     document.getElementById("newProductName").value = "";
     document.getElementById("newProductDesc").value = "";
@@ -703,7 +817,7 @@ function register() {
 
   showLoading();
   setTimeout(() => {
-    users.push({ u, p: hash(p), balance: 0 });
+    users.push({ u, p: hash(p), balance: 0, orders: [] });
     storage.setItem("users", JSON.stringify(users));
     document.getElementById("regModal").classList.add("hidden");
     hideLoading();
@@ -747,16 +861,24 @@ function buy(i) {
   showLoading();
   setTimeout(() => {
     currentUser.balance -= price;
-    const idx = users.findIndex(x => x.u === currentUser.u);
-    users[idx].balance = currentUser.balance;
-    // Tăng số lượng đã bán khi mua thật (tùy chọn)
+    const userIndex = users.findIndex(x => x.u === currentUser.u);
+    users[userIndex].balance = currentUser.balance;
+    // Thêm vào lịch sử mua
+    if (!users[userIndex].orders) users[userIndex].orders = [];
+    users[userIndex].orders.push({
+      productName: products[i].name,
+      date: new Date().toLocaleString('vi-VN'),
+      status: 'pending',
+      details: ''
+    });
+    // Tăng sold
     products[i].sold = (products[i].sold || 0) + 1;
     storage.setItem("users", JSON.stringify(users));
     storage.setItem("products", JSON.stringify(products));
     storage.setItem("currentUser", JSON.stringify(currentUser));
     render();
     hideLoading();
-    alert("Mua thành công! Hàng sẽ gửi qua tin nhắn hoặc Telegram.");
+    alert("Mua thành công! Đang đợi admin duyệt để gửi chi tiết.");
   }, 1000);
 }
 
@@ -774,7 +896,7 @@ if (products.length === 0) {
 }
 
 if (!users.some(u => u.u === "admin")) {
-  users.push({ u: "admin", p: hash("admin123"), balance: 999999999 });
+  users.push({ u: "admin", p: hash("admin123"), balance: 999999999, orders: [] });
   storage.setItem("users", JSON.stringify(users));
 }
 
@@ -782,3 +904,6 @@ render();
 </script>
 </body>
 </html>
+```}
+
+// -----
