@@ -11,108 +11,110 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: #0a0e17;
+    background: #0f0f0f;
     color: #e2e8f0;
     min-height: 100vh;
-    background: linear-gradient(135deg, #0a0e17 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #1a0000 0%, #300000 100%);
   }
 
   .top {
     height: 70px;
-    background: rgba(15, 23, 42, 0.9);
+    background: rgba(30, 0, 0, 0.9);
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
   }
 
   .logo {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    background: linear-gradient(90deg, #38bdf8, #a5f3fc);
+    background: linear-gradient(90deg, #ef4444, #f87171);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
   }
 
-  .top-right button {
-    background: linear-gradient(135deg, #38bdf8, #22d3ee);
-    color: #0f172a;
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .top-right button, .top-right .admin-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
-    margin-left: 12px;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
   }
 
-  .top-right button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+  .top-right button:hover, .top-right .admin-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6);
+    background: linear-gradient(135deg, #f87171, #ef4444);
   }
 
   .wrap {
     max-width: 1400px;
     margin: 30px auto;
     padding: 0 20px;
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
   }
 
   .sidebar {
-    width: 280px;
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(8px);
-    border-radius: 20px;
+    width: 260px;
+    background: rgba(20, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
     padding: 25px;
-    border: 1px solid rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.2);
     height: fit-content;
   }
 
   .sidebar h3 {
-    color: #38bdf8;
-    font-size: 0.9rem;
+    color: #f87171;
+    font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
   }
 
   .sidebar a {
     display: block;
     padding: 14px 18px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    color: #cbd5e1;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    color: #fda4af;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
     cursor: pointer;
   }
 
   .sidebar a:hover {
-    background: rgba(59, 130, 246, 0.15);
-    color: #38bdf8;
-    transform: translateX(8px);
+    background: rgba(239, 68, 68, 0.15);
+    color: #fef2f2;
+    transform: translateX(6px);
   }
 
   .content { flex: 1; min-width: 320px; }
 
   .notice {
-    background: rgba(30, 41, 59, 0.6);
-    border-left: 5px solid #38bdf8;
+    background: rgba(30, 0, 0, 0.6);
+    border-left: 5px solid #ef4444;
     padding: 16px 20px;
     border-radius: 12px;
     margin-bottom: 30px;
-    font-size: 0.95rem;
-    backdrop-filter: blur(4px);
+    font-size: 0.98rem;
+    backdrop-filter: blur(6px);
   }
 
   .products {
@@ -122,108 +124,116 @@
   }
 
   .card {
-    background: rgba(15, 23, 42, 0.7);
-    border-radius: 20px;
+    background: rgba(20, 0, 0, 0.75);
+    border-radius: 16px;
     padding: 24px;
-    border: 1px solid rgba(59, 130, 246, 0.15);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(6px);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    transition: all 0.35s ease;
+    backdrop-filter: blur(8px);
   }
 
   .card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 25px 50px -12px rgba(56, 189, 248, 0.25);
-    border-color: #38bdf8;
+    transform: translateY(-14px);
+    box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.35);
+    border-color: #ef4444;
   }
 
   .card h4 {
-    color: #a5f3fc;
-    font-size: 1.25rem;
+    color: #fecaca;
+    font-size: 1.3rem;
     margin-bottom: 10px;
-    font-weight: 700;
   }
 
   .price {
-    color: #4ade80;
-    font-size: 1.5rem;
+    color: #fbbf24;
+    font-size: 1.6rem;
     font-weight: 800;
     margin: 16px 0;
   }
 
   .buy {
-    background: linear-gradient(135deg, #38bdf8, #22d3ee);
-    color: #0f172a;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
     font-weight: 700;
     text-align: center;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
   }
 
   .buy:hover {
-    transform: scale(1.06);
-    box-shadow: 0 12px 30px rgba(56, 189, 248, 0.6);
+    transform: scale(1.08);
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.7);
   }
 
   .box {
-    background: rgba(15, 23, 42, 0.7);
-    border-radius: 20px;
-    padding: 25px;
+    background: rgba(20, 0, 0, 0.75);
+    border-radius: 16px;
+    padding: 28px;
     margin-bottom: 30px;
-    border: 1px solid rgba(59, 130, 246, 0.15);
-    backdrop-filter: blur(6px);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    backdrop-filter: blur(8px);
   }
 
   .box h3 {
-    color: #38bdf8;
+    color: #f87171;
     margin-bottom: 20px;
-    font-weight: 700;
   }
 
-  input, textarea {
+  input, textarea, select {
     width: 100%;
     padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    background: rgba(30, 41, 59, 0.6);
+    border-radius: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    background: rgba(40, 0, 0, 0.6);
     color: white;
     margin-bottom: 16px;
     font-size: 1rem;
-    transition: all 0.2s;
   }
 
-  input:focus, textarea:focus {
+  input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
   }
 
-  button {
-    background: linear-gradient(135deg, #38bdf8, #22d3ee);
-    color: #0f172a;
+  button.action-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
     border: none;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
   }
 
-  button:hover {
+  button.action-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6);
+  }
+
+  .delete-btn {
+    background: #991b1b;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    background: #b91c1c;
   }
 
   .modal {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -236,66 +246,31 @@
 
   .modal .box {
     width: 90%;
-    max-width: 420px;
-    background: rgba(15, 23, 42, 0.95);
-    border-radius: 24px;
-    padding: 32px;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    max-width: 480px;
+    background: rgba(20, 0, 0, 0.95);
+    border-radius: 20px;
+    padding: 40px 32px;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.7);
+    position: relative;
   }
 
-  .qr img {
-    width: 100%;
-    max-width: 260px;
-    border-radius: 16px;
-    margin: 20px auto;
-    display: block;
-    border: 3px solid #38bdf8;
-    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
+  .modal h3 {
+    color: #f87171;
+    text-align: center;
+    margin-bottom: 28px;
+    font-size: 1.6rem;
   }
 
-  /* ===== LOADING ANIMATION ===== */
-  #loadingOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 14, 23, 0.95);
-    backdrop-filter: blur(8px);
+  .user-list-item {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease;
-  }
-
-  #loadingOverlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .spinner {
-    width: 70px;
-    height: 70px;
-    border: 6px solid rgba(56, 189, 248, 0.2);
-    border-top: 6px solid #38bdf8;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .loading-text {
-    margin-top: 25px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #38bdf8;
-    letter-spacing: 1px;
+    padding: 14px;
+    background: rgba(40, 0, 0, 0.5);
+    border-radius: 10px;
+    margin: 10px 0;
+    border: 1px solid rgba(239, 68, 68, 0.15);
   }
 
   @media (max-width: 768px) {
@@ -306,10 +281,9 @@
 </head>
 <body>
 
-<!-- LOADING OVERLAY -->
-<div id="loadingOverlay">
-  <div class="spinner"></div>
-  <div class="loading-text">Đang xử lý...</div>
+<div id="loadingOverlay" style="position:fixed;inset:0;background:rgba(10,0,0,0.95);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;opacity:0;visibility:hidden;transition:all 0.4s;">
+  <div class="spinner" style="width:80px;height:80px;border:8px solid rgba(239,68,68,0.2);border-top:8px solid #ef4444;border-radius:50%;animation:spin 1s linear infinite;"></div>
+  <div style="margin-top:30px;font-size:1.2rem;font-weight:600;color:#ef4444;">Đang xử lý...</div>
 </div>
 
 <div class="top">
@@ -317,12 +291,11 @@
   <div class="top-right" id="topRight"></div>
 </div>
 
-<div class="wrap">
+<div class="wrap" style="display:flex;gap:30px;">
   <div class="sidebar">
     <h3>MENU</h3>
     <a onclick="view='shop';render()">Cửa hàng</a>
     <a onclick="view='nap';render()">Nạp tiền</a>
-    <a onclick="openAdmin()">Admin Panel</a>
   </div>
   <div class="content" id="content"></div>
 </div>
@@ -333,42 +306,64 @@
     <h3>Đăng Nhập</h3>
     <input id="lu" placeholder="Tên đăng nhập">
     <input id="lp" type="password" placeholder="Mật khẩu">
-    <button onclick="login()">Đăng Nhập</button>
+    <button class="action-btn" onclick="login()">Đăng Nhập</button>
   </div>
 </div>
 
 <!-- Modal Đăng ký -->
 <div class="modal hidden" id="regModal">
   <div class="box">
-    <h3>Tạo Tài Khoản</h3>
+    <h3>Tạo Tài Khoản Mới</h3>
     <input id="ru" placeholder="Tên đăng nhập (≥4 ký tự)">
     <input id="rp" type="password" placeholder="Mật khẩu (≥6 ký tự)">
-    <button onclick="register()">Tạo Tài Khoản</button>
+    <button class="action-btn" onclick="register()">Tạo Tài Khoản</button>
+  </div>
+</div>
+
+<!-- Modal Admin (quản lý user + các thứ khác) -->
+<div class="modal hidden" id="adminModal">
+  <div class="box" style="max-width:900px;width:95%;">
+    <h3>Admin Panel</h3>
+    
+    <div class="box">
+      <h4 style="color:#fecaca;">Quản lý người dùng</h4>
+      <div id="userList"></div>
+      
+      <h4 style="color:#fecaca;margin-top:30px;">Thêm người dùng mới</h4>
+      <input id="newUserName" placeholder="Tên đăng nhập">
+      <input id="newUserPass" type="password" placeholder="Mật khẩu">
+      <input id="newUserBalance" type="number" placeholder="Số dư ban đầu (đ)">
+      <button class="action-btn" onclick="addNewUser()">Thêm User</button>
+    </div>
+
+    <div class="box">
+      <h4 style="color:#fecaca;">Thông báo trang chủ</h4>
+      <textarea id="n" rows="3">${notice}</textarea>
+      <button class="action-btn" onclick="saveNotice()">Lưu</button>
+    </div>
+
+    <div class="box">
+      <h4 style="color:#fecaca;">QR Nạp tiền</h4>
+      <input id="q" value="${qr}" placeholder="Link ảnh QR">
+      <input id="qn" value="${qrNote}" placeholder="Ghi chú">
+      <button class="action-btn" onclick="saveQR()">Lưu QR</button>
+    </div>
+
+    <button class="action-btn" style="background:#4b5563;margin-top:20px;" onclick="closeAdmin()">Đóng</button>
   </div>
 </div>
 
 <script>
-// Fix localStorage
+const loadingOverlay = document.getElementById("loadingOverlay");
+function showLoading() { loadingOverlay.style.opacity = "1"; loadingOverlay.style.visibility = "visible"; }
+function hideLoading() { setTimeout(() => { loadingOverlay.style.opacity = "0"; loadingOverlay.style.visibility = "hidden"; }, 400); }
+
 function getStorage() {
   try { return localStorage; } catch(e) {
-    return {
-      data: {},
-      getItem(k) { return this.data[k] || null; },
-      setItem(k, v) { this.data[k] = v+''; },
-      removeItem(k) { delete this.data[k]; }
-    };
+    return { data:{}, getItem(k){return this.data[k]||null;}, setItem(k,v){this.data[k]=v+'';}, removeItem(k){delete this.data[k];} };
   }
 }
 const storage = getStorage();
-
-// Loading functions
-const loadingOverlay = document.getElementById("loadingOverlay");
-function showLoading() {
-  loadingOverlay.classList.add("active");
-}
-function hideLoading() {
-  setTimeout(() => loadingOverlay.classList.remove("active"), 300);
-}
 
 let users = JSON.parse(storage.getItem("users") || "[]");
 let products = JSON.parse(storage.getItem("products") || "[]");
@@ -377,6 +372,7 @@ let qr = storage.getItem("qr") || "https://i.imgur.com/9Z7Y9Kb.png";
 let qrNote = storage.getItem("qrNote") || "Chuyển khoản đúng nội dung → tiền tự động cộng trong 1-5 phút";
 let currentUser = JSON.parse(storage.getItem("currentUser") || "null");
 let view = "shop";
+const ADMIN_PASSWORD = "admin123"; // đổi nếu muốn
 
 function hash(str) {
   let h = 0;
@@ -384,12 +380,24 @@ function hash(str) {
   return h.toString(36);
 }
 
+function isAdmin() {
+  return currentUser && currentUser.u === "admin"; // hoặc thêm flag isAdmin: true khi tạo admin
+}
+
 function render() {
-  document.getElementById("topRight").innerHTML = currentUser 
-    ? `<span>${currentUser.u} • ${Number(currentUser.balance).toLocaleString('vi-VN')}đ</span>
-       <button onclick="logout()">Thoát</button>`
-    : `<button onclick="openLogin()">Đăng nhập</button>
-       <button onclick="openRegister()">Đăng ký</button>`;
+  const topRight = document.getElementById("topRight");
+  let html = currentUser 
+    ? `<span>${currentUser.u} • ${Number(currentUser.balance).toLocaleString('vi-VN')}đ</span>`
+    : `<button onclick="openLogin()">Đăng nhập</button><button onclick="openRegister()">Đăng ký</button>`;
+
+  if (isAdmin()) {
+    html += `<button class="admin-btn" onclick="openAdminPanel()">Admin Panel</button>`;
+  }
+
+  if (currentUser) {
+    html += `<button onclick="logout()">Thoát</button>`;
+  }
+  topRight.innerHTML = html;
 
   const content = document.getElementById("content");
 
@@ -400,11 +408,11 @@ function render() {
         ${products.length ? products.map((p,i)=>`
           <div class="card">
             <h4>${p.name}</h4>
-            <div style="color:#94a3b8;margin:8px 0;">${p.desc}</div>
+            <div style="color:#fda4af;margin:8px 0;">${p.desc}</div>
             <div class="price">${Number(p.price).toLocaleString('vi-VN')}đ</div>
             <div class="buy" onclick="buy(${i})">MUA NGAY</div>
           </div>
-        `).join("") : "<div style='text-align:center;padding:60px 0;color:#64748b;'>Chưa có sản phẩm nào.<br>Vào Admin để thêm ngay!</div>"}
+        `).join("") : "<div style='text-align:center;padding:80px 0;color:#fda4af;'>Chưa có sản phẩm</div>"}
       </div>`;
   }
 
@@ -412,137 +420,144 @@ function render() {
     content.innerHTML = `
       <div class="box" style="text-align:center">
         <h3>Nạp Tiền</h3>
-        ${qr ? `<img src="${qr}" alt="QR Code">` : "<p style='color:#f87171'>Chưa có QR. Vào Admin để thêm.</p>"}
-        <p style="margin:20px 0;color:#cbd5e1;">${qrNote}</p>
-        <p style="color:#4ade80;font-weight:600;">Tiền sẽ tự động cộng sau khi chuyển khoản!</p>
-      </div>`;
-  }
-
-  if(view === "admin") {
-    content.innerHTML = `
-      <div class="box">
-        <h3>Thông Báo Trang Chủ</h3>
-        <textarea id="n" rows="3">${notice}</textarea>
-        <button onclick="saveNotice()">Lưu</button>
-      </div>
-      <div class="box">
-        <h3>QR Code Nạp Tiền</h3>
-        <input id="q" value="${qr}" placeholder="Dán link ảnh QR">
-        <input id="qn" value="${qrNote}" placeholder="Ghi chú dưới QR">
-        <button onclick="saveQR()">Lưu QR</button>
-      </div>
-      <div class="box">
-        <h3>Thêm Sản Phẩm Mới</h3>
-        <input id="pn" placeholder="Tên sản phẩm">
-        <input id="pd" placeholder="Mô tả chi tiết">
-        <input id="pp" type="number" placeholder="Giá (ví dụ: 150000)">
-        <button onclick="addProduct()">Thêm Sản Phẩm</button>
-      </div>
-      <div class="box">
-        <h3>Danh Sách Sản Phẩm</h3>
-        ${products.map((p,i)=>`
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:rgba(30,41,59,0.5);border-radius:12px;margin:10px 0;">
-            <div>
-              <strong style="color:#a5f3fc">${p.name}</strong><br>
-              <span style="color:#94a3b8">${p.desc} • ${Number(p.price).toLocaleString('vi-VN')}đ</span>
-            </div>
-            <button onclick="del(${i})" style="background:#ef4444;padding:8px 16px;font-size:0.9rem;">Xóa</button>
-          </div>
-        `).join("") || "<p style='text-align:center;color:#64748b;'>Chưa có sản phẩm nào.</p>"}
+        ${qr ? `<img src="${qr}" alt="QR" style="max-width:300px;border-radius:16px;border:2px solid #ef4444;">` : "<p style='color:#fda4af'>Chưa có QR</p>"}
+        <p style="margin:25px 0;color:#fecaca;">${qrNote}</p>
       </div>`;
   }
 }
 
-// Các hàm lưu + loading
-function saveNotice() { 
-  showLoading(); 
-  setTimeout(() => {
-    notice = document.getElementById("n").value; 
-    storage.setItem("notice", notice); 
-    render(); 
-    hideLoading();
-    alert("Đã cập nhật thông báo!");
-  }, 800);
+function openAdminPanel() {
+  const pass = prompt("Xác nhận mật khẩu Admin:");
+  if (pass === ADMIN_PASSWORD) {
+    document.getElementById("adminModal").classList.remove("hidden");
+    renderUserList();
+  } else if (pass !== null) {
+    alert("Mật khẩu sai!");
+  }
 }
 
-function saveQR() { 
-  showLoading(); 
-  setTimeout(() => {
-    qr = document.getElementById("q").value; 
-    qrNote = document.getElementById("qn").value; 
-    storage.setItem("qr", qr); 
-    storage.setItem("qrNote", qrNote); 
-    render(); 
-    hideLoading();
-    alert("Đã cập nhật QR!");
-  }, 800);
+function closeAdmin() {
+  document.getElementById("adminModal").classList.add("hidden");
 }
 
-function addProduct() {
-  const n = document.getElementById("pn"), d = document.getElementById("pd"), p = document.getElementById("pp");
-  if (!n.value || !d.value || !p.value || isNaN(p.value)) return alert("Vui lòng điền đầy đủ và đúng định dạng!");
-  showLoading();
-  setTimeout(() => {
-    products.push({ name: n.value, desc: d.value, price: p.value });
-    storage.setItem("products", JSON.stringify(products));
-    n.value = d.value = p.value = "";
-    render();
-    hideLoading();
-    alert("Thêm sản phẩm thành công!");
-  }, 800);
+function renderUserList() {
+  const list = document.getElementById("userList");
+  let html = "";
+  users.forEach((user, i) => {
+    html += `
+      <div class="user-list-item">
+        <div>
+          <strong style="color:#fecaca;">${user.u}</strong><br>
+          <span style="color:#fda4af;">Số dư: ${Number(user.balance).toLocaleString('vi-VN')}đ</span>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <input type="number" id="amount_${i}" placeholder="Số tiền" style="width:120px;">
+          <button class="action-btn" style="padding:8px 14px;font-size:0.9rem;" onclick="changeBalance(${i}, true)">+ Tiền</button>
+          <button class="action-btn" style="background:#991b1b;padding:8px 14px;font-size:0.9rem;" onclick="changeBalance(${i}, false)">- Tiền</button>
+          <button class="delete-btn" onclick="deleteUser(${i})">Xóa</button>
+        </div>
+      </div>
+    `;
+  });
+  list.innerHTML = html || "<p style='text-align:center;color:#fda4af;'>Chưa có người dùng nào</p>";
 }
 
-function del(i) {
-  if (confirm("Bạn có chắc muốn xóa sản phẩm này?")) {
+function changeBalance(index, isAdd) {
+  const amountInput = document.getElementById(`amount_${index}`);
+  const amount = Number(amountInput.value);
+  if (!amount || amount <= 0) return alert("Vui lòng nhập số tiền hợp lệ!");
+
+  if (confirm(`Xác nhận ${isAdd ? "cộng" : "trừ"} ${amount.toLocaleString('vi-VN')}đ cho user này?`)) {
     showLoading();
     setTimeout(() => {
-      products.splice(i, 1);
-      storage.setItem("products", JSON.stringify(products));
+      if (isAdd) {
+        users[index].balance += amount;
+      } else {
+        users[index].balance = Math.max(0, users[index].balance - amount);
+      }
+      storage.setItem("users", JSON.stringify(users));
+      if (currentUser && currentUser.u === users[index].u) {
+        currentUser.balance = users[index].balance;
+        storage.setItem("currentUser", JSON.stringify(currentUser));
+      }
+      renderUserList();
       render();
       hideLoading();
     }, 600);
   }
 }
 
-function openAdmin() {
-  const pass = prompt("Mật khẩu Admin:");
-  if (pass === "admin123") { view = "admin"; render(); }
-  else if (pass !== null) alert("Mật khẩu sai!");
+function deleteUser(index) {
+  if (confirm("Xóa người dùng này vĩnh viễn?")) {
+    showLoading();
+    setTimeout(() => {
+      if (users[index].u === currentUser?.u) {
+        logout();
+      }
+      users.splice(index, 1);
+      storage.setItem("users", JSON.stringify(users));
+      renderUserList();
+      hideLoading();
+    }, 600);
+  }
 }
 
+function addNewUser() {
+  const name = document.getElementById("newUserName").value.trim();
+  const pass = document.getElementById("newUserPass").value;
+  const bal = Number(document.getElementById("newUserBalance").value) || 0;
+
+  if (!name || name.length < 4) return alert("Tên đăng nhập ≥ 4 ký tự");
+  if (!pass || pass.length < 6) return alert("Mật khẩu ≥ 6 ký tự");
+  if (users.some(u => u.u === name)) return alert("Tên đăng nhập đã tồn tại!");
+
+  showLoading();
+  setTimeout(() => {
+    users.push({ u: name, p: hash(pass), balance: bal });
+    storage.setItem("users", JSON.stringify(users));
+    document.getElementById("newUserName").value = "";
+    document.getElementById("newUserPass").value = "";
+    document.getElementById("newUserBalance").value = "";
+    renderUserList();
+    hideLoading();
+    alert("Đã thêm user mới!");
+  }, 800);
+}
+
+// Các hàm còn lại (register, login, buy, saveNotice, saveQR, etc.)
 function register() {
   const u = document.getElementById("ru").value.trim();
   const p = document.getElementById("rp").value;
-  if (!u || !p) return alert("Vui lòng điền đầy đủ!");
-  if (u.length < 4) return alert("Tên đăng nhập phải ≥ 4 ký tự");
-  if (p.length < 6) return alert("Mật khẩu phải ≥ 6 ký tự");
-  if (users.find(x => x.u === u)) return alert("Tên đăng nhập đã tồn tại!");
-  
+  if (!u || !p) return alert("Điền đầy đủ!");
+  if (u.length < 4) return alert("Tên đăng nhập ≥ 4 ký tự");
+  if (p.length < 6) return alert("Mật khẩu ≥ 6 ký tự");
+  if (users.find(x => x.u === u)) return alert("Tên đã tồn tại!");
+
   showLoading();
   setTimeout(() => {
     users.push({ u, p: hash(p), balance: 0 });
     storage.setItem("users", JSON.stringify(users));
-    document.getElementById("regModal").style.display = "none"; // Sử dụng style.display để đóng chắc chắn
+    document.getElementById("regModal").classList.add("hidden");
     hideLoading();
-    alert("Đăng ký thành công! Hãy đăng nhập ngay.");
-    openLogin(); // Mở đăng nhập ngay
-  }, 1000);
+    alert("Đăng ký thành công! Đăng nhập ngay nhé.");
+    openLogin();
+  }, 800);
 }
 
 function login() {
   const u = document.getElementById("lu").value.trim();
   const p = document.getElementById("lp").value;
   const user = users.find(x => x.u === u && x.p === hash(p));
-  if (!user) return alert("Sai tên đăng nhập hoặc mật khẩu!");
-  
+  if (!user) return alert("Sai tên hoặc mật khẩu!");
+
   showLoading();
   setTimeout(() => {
     currentUser = user;
     storage.setItem("currentUser", JSON.stringify(user));
-    document.getElementById("loginModal").style.display = "none"; // Đóng bằng style.display
+    document.getElementById("loginModal").classList.add("hidden");
     render();
     hideLoading();
-  }, 1000);
+  }, 800);
 }
 
 function logout() {
@@ -552,53 +567,69 @@ function logout() {
     storage.removeItem("currentUser");
     render();
     hideLoading();
-  }, 600);
+  }, 500);
 }
 
 function buy(i) {
-  if (!currentUser) return alert("Vui lòng đăng nhập trước!");
+  if (!currentUser) return alert("Đăng nhập trước nhé!");
   const price = Number(products[i].price);
-  if (currentUser.balance < price) return alert("Số dư không đủ! Vui lòng nạp thêm.");
-  if (!confirm(`Xác nhận mua "${products[i].name}" với giá ${price.toLocaleString('vi-VN')}đ ?`)) return;
-  
+  if (currentUser.balance < price) return alert("Không đủ tiền! Nạp thêm đi.");
+  if (!confirm(`Mua "${products[i].name}" - ${price.toLocaleString('vi-VN')}đ ?`)) return;
+
   showLoading();
   setTimeout(() => {
     currentUser.balance -= price;
     const idx = users.findIndex(x => x.u === currentUser.u);
-    if (idx !== -1) users[idx].balance = currentUser.balance;
+    users[idx].balance = currentUser.balance;
     storage.setItem("users", JSON.stringify(users));
     storage.setItem("currentUser", JSON.stringify(currentUser));
     render();
     hideLoading();
-    alert("Mua hàng thành công! Tài khoản/sản phẩm sẽ được gửi qua tin nhắn.");
-  }, 1200);
+    alert("Mua thành công! Hàng sẽ gửi qua tin nhắn.");
+  }, 1000);
 }
 
-function openLogin() { 
-  document.getElementById("loginModal").style.display = "flex";
-  document.getElementById("regModal").style.display = "none"; // Đảm bảo modal khác đóng
+function openLogin() { document.getElementById("loginModal").classList.remove("hidden"); }
+function openRegister() { document.getElementById("regModal").classList.remove("hidden"); }
+
+function saveNotice() { 
+  showLoading();
+  setTimeout(() => {
+    notice = document.getElementById("n").value;
+    storage.setItem("notice", notice);
+    render();
+    hideLoading();
+    alert("Đã lưu thông báo!");
+  }, 600);
 }
 
-function openRegister() { 
-  document.getElementById("regModal").style.display = "flex";
-  document.getElementById("loginModal").style.display = "none"; // Đảm bảo modal khác đóng
+function saveQR() { 
+  showLoading();
+  setTimeout(() => {
+    qr = document.getElementById("q").value;
+    qrNote = document.getElementById("qn").value;
+    storage.setItem("qr", qr);
+    storage.setItem("qrNote", qrNote);
+    render();
+    hideLoading();
+    alert("Đã lưu QR!");
+  }, 600);
 }
-
-window.onclick = e => {
-  if (e.target.classList.contains("modal")) {
-    e.target.style.display = "none"; // Đóng bằng style.display
-  }
-};
 
 // Dữ liệu mẫu
 if (products.length === 0) {
   products = [
-    { name: "Netflix Premium 1 Tháng", desc: "Tài khoản chính chủ - Full HD", price: "159000" },
-    { name: "Spotify Premium 3 Tháng", desc: "Nghe không quảng cáo - Chia sẻ 6 người", price: "290000" },
-    { name: "Windows 11 Pro Key", desc: "Key bản quyền vĩnh viễn", price: "690000" },
-    { name: "Canva Pro 1 Năm", desc: "Tài khoản cá nhân - Không giới hạn", price: "890000" }
+    { name: "Netflix Premium 1 Tháng", desc: "Full HD - Chính chủ", price: "159000" },
+    { name: "Spotify Premium 3 Tháng", desc: "Chia sẻ 6 người", price: "290000" },
+    { name: "Canva Pro 1 Năm", desc: "Không giới hạn", price: "890000" }
   ];
   storage.setItem("products", JSON.stringify(products));
+}
+
+// Tạo admin mặc định nếu chưa có
+if (!users.some(u => u.u === "admin")) {
+  users.push({ u: "admin", p: hash("admin123"), balance: 999999999 });
+  storage.setItem("users", JSON.stringify(users));
 }
 
 render();
