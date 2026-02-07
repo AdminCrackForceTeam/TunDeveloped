@@ -230,6 +230,10 @@
     z-index: 9999;
   }
 
+  .modal.hidden {
+    display: none;
+  }
+
   .modal .box {
     width: 90%;
     max-width: 420px;
@@ -250,6 +254,7 @@
     box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
   }
 
+  /* ===== LOADING ANIMATION ===== */
   #loadingOverlay {
     position: fixed;
     inset: 0;
@@ -301,6 +306,7 @@
 </head>
 <body>
 
+<!-- LOADING OVERLAY -->
 <div id="loadingOverlay">
   <div class="spinner"></div>
   <div class="loading-text">Đang xử lý...</div>
@@ -342,7 +348,7 @@
 </div>
 
 <script>
-// Fix localStorage fallback
+// Fix localStorage
 function getStorage() {
   try { return localStorage; } catch(e) {
     return {
@@ -355,10 +361,14 @@ function getStorage() {
 }
 const storage = getStorage();
 
-// Loading
+// Loading functions
 const loadingOverlay = document.getElementById("loadingOverlay");
-function showLoading() { loadingOverlay.classList.add("active"); }
-function hideLoading() { setTimeout(() => loadingOverlay.classList.remove("active"), 400); }
+function showLoading() {
+  loadingOverlay.classList.add("active");
+}
+function hideLoading() {
+  setTimeout(() => loadingOverlay.classList.remove("active"), 300);
+}
 
 let users = JSON.parse(storage.getItem("users") || "[]");
 let products = JSON.parse(storage.getItem("products") || "[]");
@@ -443,11 +453,11 @@ function render() {
   }
 }
 
-// Save functions
+// Các hàm lưu + loading
 function saveNotice() { 
   showLoading(); 
   setTimeout(() => {
-    notice = document.getElementById("n").value.trim(); 
+    notice = document.getElementById("n").value; 
     storage.setItem("notice", notice); 
     render(); 
     hideLoading();
@@ -458,8 +468,8 @@ function saveNotice() {
 function saveQR() { 
   showLoading(); 
   setTimeout(() => {
-    qr = document.getElementById("q").value.trim(); 
-    qrNote = document.getElementById("qn").value.trim(); 
+    qr = document.getElementById("q").value; 
+    qrNote = document.getElementById("qn").value; 
     storage.setItem("qr", qr); 
     storage.setItem("qrNote", qrNote); 
     render(); 
@@ -470,12 +480,10 @@ function saveQR() {
 
 function addProduct() {
   const n = document.getElementById("pn"), d = document.getElementById("pd"), p = document.getElementById("pp");
-  if (!n.value.trim() || !d.value.trim() || !p.value || isNaN(p.value) || Number(p.value) <= 0) {
-    return alert("Vui lòng điền đầy đủ và giá phải là số dương!");
-  }
+  if (!n.value || !d.value || !p.value || isNaN(p.value)) return alert("Vui lòng điền đầy đủ và đúng định dạng!");
   showLoading();
   setTimeout(() => {
-    products.push({ name: n.value.trim(), desc: d.value.trim(), price: p.value });
+    products.push({ name: n.value, desc: d.value, price: p.value });
     storage.setItem("products", JSON.stringify(products));
     n.value = d.value = p.value = "";
     render();
@@ -498,18 +506,13 @@ function del(i) {
 
 function openAdmin() {
   const pass = prompt("Mật khẩu Admin:");
-  if (pass === "admin123") { 
-    view = "admin"; 
-    render(); 
-  } else if (pass !== null) {
-    alert("Mật khẩu sai!");
-  }
+  if (pass === "admin123") { view = "admin"; render(); }
+  else if (pass !== null) alert("Mật khẩu sai!");
 }
 
 function register() {
   const u = document.getElementById("ru").value.trim();
   const p = document.getElementById("rp").value;
-  
   if (!u || !p) return alert("Vui lòng điền đầy đủ!");
   if (u.length < 4) return alert("Tên đăng nhập phải ≥ 4 ký tự");
   if (p.length < 6) return alert("Mật khẩu phải ≥ 6 ký tự");
@@ -517,46 +520,28 @@ function register() {
   
   showLoading();
   setTimeout(() => {
-    const hashed = hash(p);
-    users.push({ u, p: hashed, balance: 0 });
+    users.push({ u, p: hash(p), balance: 0 });
     storage.setItem("users", JSON.stringify(users));
-    
-    document.getElementById("regModal").classList.add("hidden");
-    
+    document.getElementById("regModal").style.display = "none"; // Sử dụng style.display để đóng chắc chắn
     hideLoading();
-    alert("Đăng ký thành công! Mời bạn đăng nhập ngay.");
-    
-    // Tự động mở form đăng nhập
-    openLogin();
-
-    // Nếu muốn TỰ ĐỘNG ĐĂNG NHẬP luôn, bỏ comment đoạn dưới:
-    /*
-    const newUser = users.find(x => x.u === u);
-    if (newUser) {
-      currentUser = newUser;
-      storage.setItem("currentUser", JSON.stringify(currentUser));
-      render();
-      alert("Đăng ký thành công! Bạn đã được đăng nhập tự động.");
-    }
-    */
+    alert("Đăng ký thành công! Hãy đăng nhập ngay.");
+    openLogin(); // Mở đăng nhập ngay
   }, 1000);
 }
 
 function login() {
   const u = document.getElementById("lu").value.trim();
   const p = document.getElementById("lp").value;
-  
   const user = users.find(x => x.u === u && x.p === hash(p));
   if (!user) return alert("Sai tên đăng nhập hoặc mật khẩu!");
   
   showLoading();
   setTimeout(() => {
     currentUser = user;
-    storage.setItem("currentUser", JSON.stringify(currentUser));
-    document.getElementById("loginModal").classList.add("hidden");
+    storage.setItem("currentUser", JSON.stringify(user));
+    document.getElementById("loginModal").style.display = "none"; // Đóng bằng style.display
     render();
     hideLoading();
-    alert(`Chào mừng ${u} quay lại!`);
   }, 1000);
 }
 
@@ -574,7 +559,6 @@ function buy(i) {
   if (!currentUser) return alert("Vui lòng đăng nhập trước!");
   const price = Number(products[i].price);
   if (currentUser.balance < price) return alert("Số dư không đủ! Vui lòng nạp thêm.");
-  
   if (!confirm(`Xác nhận mua "${products[i].name}" với giá ${price.toLocaleString('vi-VN')}đ ?`)) return;
   
   showLoading();
@@ -586,25 +570,27 @@ function buy(i) {
     storage.setItem("currentUser", JSON.stringify(currentUser));
     render();
     hideLoading();
-    alert("Mua hàng thành công!\nTài khoản/sản phẩm sẽ được gửi qua tin nhắn hoặc liên hệ hỗ trợ.");
+    alert("Mua hàng thành công! Tài khoản/sản phẩm sẽ được gửi qua tin nhắn.");
   }, 1200);
 }
 
 function openLogin() { 
-  document.getElementById("loginModal").classList.remove("hidden"); 
+  document.getElementById("loginModal").style.display = "flex";
+  document.getElementById("regModal").style.display = "none"; // Đảm bảo modal khác đóng
 }
 
 function openRegister() { 
-  document.getElementById("regModal").classList.remove("hidden"); 
+  document.getElementById("regModal").style.display = "flex";
+  document.getElementById("loginModal").style.display = "none"; // Đảm bảo modal khác đóng
 }
 
 window.onclick = e => {
   if (e.target.classList.contains("modal")) {
-    e.target.classList.add("hidden");
+    e.target.style.display = "none"; // Đóng bằng style.display
   }
 };
 
-// Dữ liệu mẫu (chỉ thêm nếu chưa có)
+// Dữ liệu mẫu
 if (products.length === 0) {
   products = [
     { name: "Netflix Premium 1 Tháng", desc: "Tài khoản chính chủ - Full HD", price: "159000" },
