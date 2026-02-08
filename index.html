@@ -663,6 +663,10 @@
   </div>
 </div>
 
+<!-- THÊM FIREBASE SDK (để code chạy được) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
 // ================== KẾT NỐI VỚI FIREBASE ==================
 const firebaseConfig = {
@@ -676,13 +680,30 @@ const firebaseConfig = {
   measurementId: "G-YLV8WBFNFF"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+let db;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+} catch (e) {
+  console.error("Lỗi khởi tạo Firebase:", e);
+}
 
 // ================== BIẾN TOÀN CỤC ==================
 const loadingOverlay = document.getElementById("loadingOverlay");
-function showLoading() { loadingOverlay.style.opacity = "1"; loadingOverlay.style.visibility = "visible"; }
-function hideLoading() { setTimeout(() => { loadingOverlay.style.opacity = "0"; loadingOverlay.style.visibility = "hidden"; }, 600); }
+function showLoading() { 
+  if (loadingOverlay) {
+    loadingOverlay.style.opacity = "1"; 
+    loadingOverlay.style.visibility = "visible"; 
+  }
+}
+function hideLoading() { 
+  setTimeout(() => { 
+    if (loadingOverlay) {
+      loadingOverlay.style.opacity = "0"; 
+      loadingOverlay.style.visibility = "hidden"; 
+    }
+  }, 600); 
+}
 
 let users = [];
 let products = [];
@@ -695,17 +716,39 @@ let view = "shop";
 const ADMIN_PASSWORD = "admin123";
 let currentBuyIndex = -1;
 
-// Khởi tạo admin nếu chưa có
-db.ref('users').once('value').then((snapshot) => {
-  const allUsers = snapshot.val() || [];
-  if (!allUsers.some(u => u.u === "admin")) {
-    allUsers.push({ u: "admin", p: hash("admin123"), balance: 0, orders: [] });
-    db.ref('users').set(allUsers);
+// Hàm hash (bạn dùng hash() nhiều nơi nhưng không định nghĩa → gây lỗi dừng script)
+function hash(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    h = ((h << 5) - h) + char;
+    h = h & h; // Convert to 32bit integer
   }
-});
+  return h.toString(36);
+}
+
+// Hàm isAdmin (bạn dùng trong render nhưng chưa định nghĩa)
+function isAdmin() {
+  return currentUser && currentUser.u === "admin";
+}
+
+// Khởi tạo admin nếu chưa có
+if (db) {
+  db.ref('users').once('value').then((snapshot) => {
+    const allUsers = snapshot.val() || [];
+    if (!allUsers.some(u => u.u === "admin")) {
+      allUsers.push({ u: "admin", p: hash("admin123"), balance: 0, orders: [] });
+      db.ref('users').set(allUsers);
+    }
+  }).catch(err => console.error("Lỗi init admin:", err));
+}
 
 // Load dữ liệu từ Firebase khi trang khởi động
 function loadDataFromFirebase() {
+  if (!db) {
+    render();
+    return;
+  }
   db.ref('/').once('value').then((snapshot) => {
     const data = snapshot.val() || {};
     users = data.users || [];
@@ -723,6 +766,7 @@ function loadDataFromFirebase() {
 
 // Lưu dữ liệu lên Firebase
 function saveAll() {
+  if (!db) return;
   const data = {
     users,
     products,
@@ -1313,6 +1357,7 @@ function saveQR() {
 
 // Khởi chạy
 loadDataFromFirebase();
+render();  // Render ngay lần đầu để tránh trang trắng
 </script>
 </body>
 </html>
