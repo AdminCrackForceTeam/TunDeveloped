@@ -10,23 +10,22 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #0a0a0a;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0f0f0f;
     color: #e2e8f0;
     min-height: 100vh;
-    line-height: 1.5;
+    background: linear-gradient(135deg, #1a0000 0%, #300000 100%);
   }
 
   .top {
-    height: 64px;
-    background: rgba(15, 0, 0, 0.94);
+    height: 70px;
+    background: rgba(30, 0, 0, 0.92);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    border-bottom: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 0 30px;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.4);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -34,245 +33,462 @@
 
   .logo {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;           /* giảm từ 2.4 → 2rem */
+    font-size: 2.4rem;
     font-weight: 900;
-    letter-spacing: -0.5px;
-    background: linear-gradient(90deg, #ff2d55, #ff6b6b, #ff9f9f);
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, #ff2d55, #ff6b6b, #ff9f9f, #ff2d55);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 12px rgba(255, 45, 85, 0.6);
-    animation: glow 3s ease-in-out infinite alternate;
+    text-shadow: 0 0 20px rgba(255, 45, 85, 0.7);
+    animation: glow 2s ease-in-out infinite alternate;
   }
 
   @keyframes glow {
-    from { text-shadow: 0 0 8px rgba(255,45,85,0.4); }
-    to   { text-shadow: 0 0 18px rgba(255,45,85,0.8); }
+    from { text-shadow: 0 0 10px rgba(255, 45, 85, 0.5); }
+    to { text-shadow: 0 0 30px rgba(255, 45, 85, 1); }
   }
 
   .top-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .top-right button, .top-right .admin-btn {
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     border: none;
-    padding: 7px 14px;
+    padding: 8px 16px;
     border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .top-right button::before, .top-right .admin-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: all 0.5s;
+  }
+
+  .top-right button:hover::before, .top-right .admin-btn:hover::before {
+    opacity: 1;
+    top: 0;
+    left: 0;
   }
 
   .top-right button:hover, .top-right .admin-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(239,68,68,0.4);
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.6), 0 0 30px rgba(239, 68, 68, 0.8);
+    background: linear-gradient(135deg, #f87171, #ef4444);
   }
 
   .wrap {
-    max-width: 1280px;          /* thu hẹp chiều rộng tối đa */
-    margin: 24px auto;
-    padding: 0 16px;
+    max-width: 1440px;
+    margin: 40px auto;
+    padding: 0 25px;
     display: flex;
-    gap: 24px;
+    gap: 35px;
   }
 
   .sidebar {
-    width: 240px;               /* giảm từ 280 → 240px */
-    background: rgba(15, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 20px 16px;
-    border: 1px solid rgba(239,68,68,0.2);
+    width: 280px;
+    background: rgba(20, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 30px 20px;
+    border: 1px solid rgba(239, 68, 68, 0.25);
     height: fit-content;
-    position: sticky;           /* ← quan trọng: sidebar cố định khi scroll */
-    top: 80px;                  /* cách đỉnh một chút để không đè logo */
-    align-self: flex-start;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
   }
 
   .sidebar h3 {
     color: #f87171;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 800;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.8px;
+    text-shadow: 0 0 5px rgba(248, 113, 113, 0.5);
   }
 
   .sidebar a {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    border-radius: 10px;
-    margin-bottom: 6px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
     color: #fda4af;
     font-weight: 600;
-    font-size: 0.98rem;
-    transition: all 0.2s;
+    font-size: 1.05rem;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
     text-decoration: none;
+    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.1);
+  }
+
+  .sidebar a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.3), transparent);
+    transition: all 0.5s;
+  }
+
+  .sidebar a:hover::before {
+    left: 100%;
   }
 
   .sidebar a:hover {
-    background: rgba(239,68,68,0.12);
-    color: white;
-    transform: translateX(4px);
+    background: rgba(239, 68, 68, 0.18);
+    color: #fef2f2;
+    transform: translateX(8px) scale(1.05);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5), inset 0 0 20px rgba(239, 68, 68, 0.3);
   }
 
   .sidebar a i {
-    margin-right: 10px;
-    font-size: 1.1rem;
+    margin-right: 12px;
+    font-size: 1.2rem;
     color: #ef4444;
+    transition: transform 0.3s, color 0.3s;
   }
 
-  .content { 
-    flex: 1; 
-    min-width: 320px; 
+  .sidebar a:hover i {
+    transform: rotate(360deg);
+    color: #fff;
   }
+
+  .content { flex: 1; min-width: 340px; }
 
   .notice {
-    background: rgba(20,0,0,0.7);
-    border-left: 5px solid #ef4444;
-    padding: 14px 20px;
-    border-radius: 12px;
-    margin-bottom: 24px;
-    font-size: 1rem;
+    background: rgba(30, 0, 0, 0.65);
+    border-left: 6px solid #ef4444;
+    padding: 18px 24px;
+    border-radius: 14px;
+    margin-bottom: 35px;
+    font-size: 1.05rem;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
   }
 
   .products {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
   }
 
   .card {
-    background: rgba(15,0,0,0.82);
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid rgba(239,68,68,0.18);
-    transition: all 0.25s ease;
+    background: rgba(20, 0, 0, 0.78);
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
   }
 
   .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 40px -8px rgba(239,68,68,0.3);
+    transform: translateY(-16px);
+    box-shadow: 0 28px 60px -14px rgba(239, 68, 68, 0.4), 0 0 40px rgba(239, 68, 68, 0.6);
     border-color: #ef4444;
   }
 
   .card h4 {
     color: #fecaca;
-    font-size: 1.28rem;
-    margin-bottom: 8px;
+    font-size: 1.45rem;
+    margin-bottom: 12px;
+    text-shadow: 0 0 5px rgba(254, 202, 202, 0.3);
   }
 
   .price {
     color: #fbbf24;
-    font-size: 1.55rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    margin: 10px 0 8px;
+    margin: 14px 0 10px;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
   }
 
-  .sold, .inventory {
-    font-size: 0.95rem;
-    margin-bottom: 6px;
+  .sold {
+    color: #34d399;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .inventory {
+    color: #a5b4fc;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 18px;
   }
 
   .buy {
     background: linear-gradient(135deg, #ef4444, #b91c1c);
     color: white;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-align: center;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.25s;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4), 0 0 20px rgba(239, 68, 68, 0.3);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
+  }
+
+  .buy::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  .buy:hover::before {
+    width: 300px;
+    height: 300px;
   }
 
   .buy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(239,68,68,0.5);
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.6), 0 0 40px rgba(239, 68, 68, 0.8);
+    text-shadow: 0 0 6px rgba(0,0,0,0.7);
+  }
+
+  .buy:active {
+    border: 2px solid #ef4444;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), inset 0 0 20px rgba(239, 68, 68, 0.5);
+    transform: translateY(0) scale(1);
   }
 
   .box {
-    background: rgba(15,0,0,0.82);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 32px;
-    border: 1px solid rgba(239,68,68,0.18);
+    background: rgba(20, 0, 0, 0.78);
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   }
 
   .box h3, .box h4 {
     color: #f87171;
-    margin-bottom: 20px;
-    font-size: 1.35rem;
+    margin-bottom: 28px;
+    font-size: 1.5rem;
+    text-shadow: 0 0 8px rgba(248, 113, 113, 0.4);
   }
 
   input, textarea, select {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(239,68,68,0.3);
-    background: rgba(30,0,0,0.7);
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    background: rgba(40, 0, 0, 0.65);
     color: white;
-    margin-bottom: 16px;
-    font-size: 0.98rem;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+    transition: all 0.3s;
   }
 
   input:focus, textarea:focus, select:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239,68,68,0.25);
     outline: none;
+    border-color: #ef4444;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3), 0 0 15px rgba(239, 68, 68, 0.5);
   }
 
   button.action-btn {
-    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 10px;
+    padding: 16px 24px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.25s;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5), 0 0 25px rgba(239, 68, 68, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
+  }
+
+  button.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  button.action-btn:hover::before {
+    width: 400px;
+    height: 400px;
   }
 
   button.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(239,68,68,0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.7), 0 0 40px rgba(239, 68, 68, 0.8);
+    background: linear-gradient(135deg, #f87171, #ef4444);
+    text-shadow: 0 0 6px rgba(0,0,0,0.7);
   }
 
+  .delete-btn {
+    background: #991b1b;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(153, 27, 27, 0.4);
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
+  }
+
+  .delete-btn:hover { 
+    background: #b91c1c; 
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(153, 27, 27, 0.6);
+    text-shadow: 0 0 6px rgba(0,0,0,0.7);
+  }
+
+  .approve-btn {
+    background: #16a34a;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.4);
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
+  }
+
+  .approve-btn:hover { 
+    background: #22c55e; 
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.6);
+    text-shadow: 0 0 6px rgba(0,0,0,0.7);
+  }
+
+  .user-list-item, .product-item, .order-item, .discount-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: rgba(40, 0, 0, 0.55);
+    border-radius: 14px;
+    margin: 14px 0;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+  }
+
+  .user-list-item:hover, .product-item:hover, .order-item:hover, .discount-item:hover {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+  }
+
+  .search-input {
+    margin-bottom: 28px;
+    font-size: 1.1rem;
+    padding: 18px 20px;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal.hidden { display: none; }
+
   .modal .box {
-    width: 92%;
-    max-width: 540px;           /* thu nhỏ modal */
-    padding: 32px 28px;
+    width: 95%;
+    max-width: 1200px;
+    background: rgba(20, 0, 0, 0.96);
+    border-radius: 24px;
+    padding: 50px 60px;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    box-shadow: 0 35px 80px rgba(0,0,0,0.75), 0 0 50px rgba(239, 68, 68, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
   }
 
   .modal h3 {
-    font-size: 1.8rem;
+    color: #f87171;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.1rem;
+    text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+  }
+
+  .qr-preview {
+    max-width: 360px;
+    border-radius: 16px;
+    border: 3px solid #ef4444;
+    margin: 24px auto;
+    display: block;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
   }
 
   @media (max-width: 768px) {
-    .wrap { 
-      flex-direction: column; 
-      padding: 0 12px;
-    }
-    .sidebar { 
-      width: 100%; 
-      position: static;           /* trên mobile không sticky nữa */
-      margin-bottom: 20px;
-    }
-    .logo { font-size: 1.8rem; }
-    .products {
-      grid-template-columns: 1fr;
-    }
-    .card { padding: 18px; }
+    .wrap { flex-direction: column; gap: 20px; }
+    .sidebar { width: 100%; padding: 20px 15px; border-radius: 15px; }
+    .sidebar a { padding: 12px 15px; font-size: 1rem; transform: none; }
+    .sidebar a:hover { transform: translateX(5px) scale(1.02); }
+    .logo { font-size: 2rem; }
+    .top { padding: 0 15px; height: 60px; }
+    .products { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+    .card { padding: 20px; border-radius: 15px; }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px -10px rgba(239, 68, 68, 0.3), 0 0 30px rgba(239, 68, 68, 0.5); }
+    .modal .box { padding: 30px 20px; max-width: 95%; }
   }
 
-  /* Giữ nguyên import font-awesome */
+  /* Thêm font awesome cho icon */
   @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 </style>
 </head>
@@ -592,8 +808,8 @@ function openBuyModal(index) {
   document.getElementById("discountCode").value = "";
   document.getElementById("buyModal").classList.remove("hidden");
 
-  // Sự kiện oninput cho mã giảm giá
-  document.getElementById("discountCode").oninput = function() {
+  // Thay đổi oninput thành onblur để chỉ kiểm tra khi mất focus
+  document.getElementById("discountCode").onblur = function() {
     const code = this.value.trim().toUpperCase();
     const discount = discounts.find(d => d.code === code);
     let finalPrice = product.price;
@@ -970,3 +1186,4 @@ render();
 </script>
 </body>
 </html>
+``` renderUser
