@@ -620,15 +620,20 @@
       <button class="action-btn" onclick="saveNotice()">Lưu</button>
     </div>
 
-    <!-- QR Nạp tiền -->
-    <div class="box">
-      <h4 style="color:#ff9999;">QR Nạp tiền</h4>
-      <input type="file" id="qrFileInput" accept="image/*">
-      <p style="font-size:1rem;color:#ff9999;margin:12px 0;">Chọn ảnh QR mới (hoặc giữ nguyên QR cũ)</p>
-      <img id="qrPreview" class="qr-preview" src="https://i.imgur.com/9Z7Y9Kb.png" alt="QR hiện tại">
-      <input id="qn" placeholder="Ghi chú (hiển thị dưới QR)">
-      <button class="action-btn" onclick="saveQR()">Lưu QR & Ghi chú</button>
-    </div>
+<!-- QR Nạp tiền -->
+<div class="box">
+  <h4 style="color:#ff9999;">QR Nạp tiền</h4>
+  <input type="file" id="qrFileInput" accept="image/*">
+  <p style="font-size:1rem;color:#ff9999;margin:12px 0;">Chọn ảnh QR mới (hoặc giữ nguyên QR cũ)</p>
+  
+  <!-- DÙNG ĐOẠN NÀY -->
+  <div class="qr-container">
+    <img id="qrPreview" class="qr-preview" src="https://i.imgur.com/9Z7Y9Kb.png" alt="QR hiện tại">
+  </div>
+  
+  <input id="qn" placeholder="Ghi chú (hiển thị dưới QR)">
+  <button class="action-btn" onclick="saveQR()">Lưu QR & Ghi chú</button>
+</div>
 
     <button class="action-btn" style="background:#4b5563;margin-top:40px;width:100%;font-size:1.3rem;" onclick="closeAdmin()">Đóng</button>
   </div>
@@ -727,14 +732,18 @@ function render() {
   }
 
   if(view === "nap") {
-    content.innerHTML = `
-      <div class="box" style="text-align:center">
-        <h3>Nạp Tiền</h3>
-        ${qr ? `<img src="${qr}" alt="QR" style="max-width:340px;border-radius:20px;border:3px solid #ff0000;">` : "<p style='color:#ff9999'>Chưa có QR</p>"}
-        <p style="margin:30px 0;color:#ff9999;font-size:1.1rem;">${qrNote}</p>
-        <p style="color:#ff9999;font-size:1.05rem;">Nội dung chuyển khoản: <strong style="color:#ffcc00;">${currentUser ? currentUser.u + ' nap tien' : 'ten_tai_khoan nap tien'}</strong></p>
-      </div>`;
-  }
+  content.innerHTML = `
+    <div class="box" style="text-align:center">
+      <h3>Nạp Tiền</h3>
+      ${qr ? `
+        <div class="qr-container">
+          <img src="${qr}" alt="QR" class="qr-preview">
+        </div>
+      ` : "<p style='color:#ff9999'>Chưa có QR</p>"}
+      <p style="margin:30px 0;color:#ff9999;font-size:1.1rem;">${qrNote}</p>
+      <p style="color:#ff9999;font-size:1.05rem;">Nội dung chuyển khoản: <strong style="color:#ffcc00;">${currentUser ? currentUser.u + ' nap tien' : 'ten_tai_khoan nap tien'}</strong></p>
+    </div>`;
+}
 
   if(view === "orders") {
     if (!currentUser) {
