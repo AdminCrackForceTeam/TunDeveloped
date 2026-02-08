@@ -475,7 +475,6 @@
     text-shadow: 0 0 12px rgba(255, 77, 77, 0.6);
   }
 
-  /* Phần QR được sửa để không bao giờ tràn khung */
   .qr-container {
     max-width: 380px;
     margin: 24px auto;
@@ -505,23 +504,16 @@
     .modal .box { padding: 30px 20px; }
     .qr-container { max-width: 320px; }
   }
-  @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
-  /* Thêm font awesome cho icon */
   @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 </style>
 </head>
 <body>
 
-
 <div id="loadingOverlay" style="position:fixed;inset:0;background:rgba(10,0,0,0.96);backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;opacity:0;visibility:hidden;transition:all 0.4s;">
   <div class="spinner" style="width:90px;height:90px;border:10px solid rgba(255,0,0,0.3);border-top:10px solid #ff0000;border-radius:50%;animation:spin 1s linear infinite;"></div>
   <div style="margin-top:35px;font-size:1.4rem;font-weight:700;color:#ff0000;">Đang xử lý...</div>
 </div>
-
 
 <div class="top">
   <div class="logo"><span>TUN</span><span>MEDIA</span></div>
@@ -646,10 +638,20 @@
         Dùng để chuyển dữ liệu từ điện thoại sang máy tính hoặc ngược lại
       </p>
       
-      <button class="action-btn" style="background:linear-gradient(135deg,#ffaa00,#cc8800);" onclick="exportData()">
-        Export dữ liệu (copy)
-      </button>
-      
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+        <button class="action-btn" 
+                style="background:linear-gradient(135deg,#ffaa00,#cc8800);"
+                onclick="exportAndCopyData()">
+          Sao chép dữ liệu (tự động copy)
+        </button>
+        
+        <button class="action-btn" 
+                style="background:#555; color:#ccc;"
+                onclick="alert('Dán dữ liệu export từ thiết bị khác vào ô bên dưới rồi nhấn Khôi phục')">
+          Hướng dẫn khôi phục
+        </button>
+      </div>
+
       <textarea id="importDataTextarea" rows="5" placeholder="Dán chuỗi dữ liệu export từ thiết bị khác vào đây..." style="margin:16px 0; font-family:monospace; font-size:0.9rem;"></textarea>
       
       <button class="action-btn" style="background:linear-gradient(135deg,#00cc66,#009955);" onclick="importData()">
@@ -858,7 +860,6 @@ function openBuyModal(index) {
   document.getElementById("discountCode").value = "";
   document.getElementById("buyModal").classList.remove("hidden");
 
-  // Sự kiện oninput cho mã giảm giá
   document.getElementById("discountCode").oninput = function() {
     const code = this.value.trim().toUpperCase();
     const discount = discounts.find(d => d.code === code);
@@ -910,7 +911,7 @@ function confirmBuy() {
   }
 }
 
-// ================== ADMIN FUNCTIONS ==================
+// ================== ADMIN ==================
 function openAdminPanel() {
   const pass = prompt("Nhập mật khẩu Admin:");
   if (pass !== ADMIN_PASSWORD) {
@@ -932,15 +933,77 @@ function closeAdmin() {
   document.getElementById("adminModal").classList.add("hidden");
 }
 
+// ================== SAO LƯU / KHÔI PHỤC DỮ LIỆU ==================
+function exportAndCopyData() {
+  const data = {
+    users: users,
+    products: products,
+    discounts: discounts,
+    notice: notice,
+    qr: qr,
+    qrNote: qrNote,
+    timestamp: new Date().toISOString()
+  };
+  
+  const jsonStr = JSON.stringify(data, null, 2);
+  
+  // Tự động copy vào clipboard
+  navigator.clipboard.writeText(jsonStr).then(() => {
+    alert("Đã sao chép toàn bộ dữ liệu vào bộ nhớ tạm!\n\nBạn chỉ cần dán (Ctrl+V) vào ô khôi phục trên thiết bị khác là được.");
+  }).catch(err => {
+    // Nếu không copy được (một số trình duyệt cũ hoặc quyền), fallback về prompt
+    prompt("Copy thủ công (Ctrl+C):\n\n", jsonStr);
+    alert("Trình duyệt không cho phép tự động copy. Vui lòng copy thủ công từ hộp thoại.");
+  });
+}
+
+function importData() {
+  const textarea = document.getElementById("importDataTextarea");
+  const text = textarea.value.trim();
+  
+  if (!text) {
+    alert("Vui lòng dán dữ liệu vào ô trước!");
+    return;
+  }
+
+  try {
+    const imported = JSON.parse(text);
+    
+    // Gán dữ liệu
+    if (imported.users) users = imported.users;
+    if (imported.products) products = imported.products;
+    if (imported.discounts) discounts = imported.discounts;
+    if (imported.notice) notice = imported.notice;
+    if (imported.qr) qr = imported.qr;
+    if (imported.qrNote) qrNote = imported.qrNote;
+
+    saveAll();
+    render();
+    alert("Khôi phục dữ liệu thành công!\n\n Trang sẽ tự động cập nhật giống dữ liệu bạn đã sao lưu.");
+    
+    // Refresh admin panel
+    document.getElementById("n").value = notice;
+    document.getElementById("qn").value = qrNote;
+    document.getElementById("qrPreview").src = qr;
+    renderUserList();
+    renderPendingOrders();
+    renderProductList();
+    renderDiscountList();
+  } catch (err) {
+    alert("Dữ liệu không đúng định dạng JSON!\nVui lòng kiểm tra lại chuỗi bạn dán.");
+    console.error(err);
+  }
+}
+
+// ================== USER FUNCTIONS ==================
 function renderUserList() {
   const search = document.getElementById("userSearch").value.toLowerCase().trim();
-  const list = document.getElementById("userList");
+  const container = document.getElementById("userList");
   let html = "";
 
   const filtered = users.filter(u => u.u !== "admin" && (!search || u.u.toLowerCase().includes(search)));
 
-  filtered.forEach((user) => {
-    const idx = users.findIndex(x => x.u === user.u);
+  filtered.forEach((user, idx) => {
     html += `
       <div class="user-list-item">
         <div>
@@ -957,7 +1020,7 @@ function renderUserList() {
     `;
   });
 
-  list.innerHTML = html || "<p style='text-align:center;color:#ff9999;padding:20px;'>Không tìm thấy user</p>";
+  container.innerHTML = html || "<p style='text-align:center;color:#ff9999;padding:20px;'>Không tìm thấy user</p>";
 }
 
 function changeBalance(index, isAdd) {
@@ -1228,59 +1291,6 @@ function saveQR() {
   } else {
     saveAll();
     alert("Đã cập nhật ghi chú QR!");
-  }
-}
-
-// ================== SAO LƯU / KHÔI PHỤC DỮ LIỆU ==================
-function exportData() {
-  const data = {
-    users: users,
-    products: products,
-    discounts: discounts,
-    notice: notice,
-    qr: qr,
-    qrNote: qrNote,
-    timestamp: new Date().toISOString()
-  };
-  const jsonStr = JSON.stringify(data, null, 2);
-  prompt("Copy toàn bộ nội dung bên dưới (Ctrl+C hoặc nhấn OK rồi copy):\n\n", jsonStr);
-}
-
-function importData() {
-  const textarea = document.getElementById("importDataTextarea");
-  const text = textarea.value.trim();
-  
-  if (!text) {
-    alert("Vui lòng dán dữ liệu vào ô trước!");
-    return;
-  }
-
-  try {
-    const imported = JSON.parse(text);
-    
-    // Gán dữ liệu
-    if (imported.users) users = imported.users;
-    if (imported.products) products = imported.products;
-    if (imported.discounts) discounts = imported.discounts;
-    if (imported.notice) notice = imported.notice;
-    if (imported.qr) qr = imported.qr;
-    if (imported.qrNote) qrNote = imported.qrNote;
-
-    saveAll();
-    render();
-    alert("Khôi phục dữ liệu thành công!\n\n Trang sẽ tự động cập nhật giống dữ liệu bạn đã sao lưu.");
-    
-    // Refresh admin panel
-    document.getElementById("n").value = notice;
-    document.getElementById("qn").value = qrNote;
-    document.getElementById("qrPreview").src = qr;
-    renderUserList();
-    renderPendingOrders();
-    renderProductList();
-    renderDiscountList();
-  } catch (err) {
-    alert("Dữ liệu không đúng định dạng JSON!\nVui lòng kiểm tra lại chuỗi bạn dán.");
-    console.error(err);
   }
 }
 
